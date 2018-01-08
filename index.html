@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Time Incremental</title>
+    <link href="index.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <script type = "text/javascript" src="index.js"></script>
+    <p>You have
+    <span id="seconds"></span>
+    seconds.</p>
+    <p> You are getting <span id = "secPerSec"></span> seconds per second.</p>
+    <button onclick = "if (sec >= secPrice){
+    sec = sec - secPrice;
+    secPerSec = secPerSec + 1;
+    secPrice = secPrice*2;}"
+  >+1 Second per Second.</button> Cost: <span id = "secPerSecPrice" ></span> seconds.
+    <p>You have
+    <span id="minutes"></span>
+    minutes, and <span id = "minBuilds"></span> time accelerators.</p>
+        <button type="button" onclick = "if (min >= minPrice){
+    min = min - minPrice;
+    minBuild = minBuild+ 1;
+    minPrice = minPrice*2;}">Time Accelerator </button> Cost: <span id = "minPerSecPrice"></span> minutes.
+    <p>You have
+    <span id="hours"></span>
+    hours, and <span id = "houBuilds"></span> hour builds.</p>
+        <button type="button" onclick = "if (hou >= houPrice){
+    hou = hou - houPrice;
+    houBuild = houBuild+ 1;
+    houPrice = houPrice*2;}">Hour Build </button> Cost: <span id = "houPerSecPrice"></span> hours.
+  </body>
+</html>
