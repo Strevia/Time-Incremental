@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Time Incremental</title>
+  </head>
+  <body>
+    <script type = "text/javascript" src="index.js"></script>
+    <p>You have been playing for <span id = "dayTime"></span> days, <span id = "hourTime"></span> hours, <span id = "minTime"></span> minutes and <span id = "secondTime"></span> seconds.</p>
+    <p>You have
+    <span id="seconds"></span>
+    seconds.</p>
+    <p> You are getting <span id = "secPerSec"></span> seconds per second.</p>
+    <button onclick = "if (sec >= secPrice){
+    sec = sec - secPrice;
+    secPerSec = secPerSec + 1;
+    secPrice = secPrice*2;}"
+  >+1 Second per Second.</button> Cost: <span id = "secPerSecPrice" ></span> seconds.
+    <p id = "numberMin">You have
+    <span id="minutes"></span>
+    minutes, and <span id = "minBuilds"></span> time accelerators.</p>
+        <p id = "minButton"><button type="button" onclick = "if (min >= minPrice){
+    min = min - minPrice;
+    minBuild = minBuild+ 1;
+    minPrice = minPrice*2;}">Time Accelerator </button> Cost: <span id = "minPerSecPrice"></span> minutes.</p>
+    <p id = "numberHour">You have
+    <span id="hours"></span>
+    hours, and <span id = "houBuilds"></span> hour builds.</p>
+        <p id = "hourButton"><button type="button" onclick = "if (hou >= houPrice){
+    hou = hou - houPrice;
+    houBuild = houBuild+ 1;
+    houPrice = houPrice*2;}">Hour Build </button> Cost: <span id = "houPerSecPrice"></span> hours.</p>
+    <p id = "numberDay">You have
+    <span id="days"></span>
+    days, and <span id = "dayBuilds"></span> day builds.</p>
+        <p id = "dayButton"><button type="button" onclick = "if (day >= houPrice){
+    day = day - dayPrice;
+    dayBuild = dayBuild+ 1;
+    dayPrice = dayPrice*2;}">Day Build </button> Cost: <span id = "dayPerSecPrice"></span> days.</p>
+  </body>
+</html>
