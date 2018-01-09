@@ -1,3 +1,9 @@
+function getCookieValue(a) {
+    var b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)');
+    return b ? b.pop() : '';
+}
+var x = getCookieValue("everything").split(',');
+if(x.length === 1){
 var sec = 1;
 var secPerSec = 0;
 var secPrice = 1;
@@ -12,15 +18,30 @@ var time = 0;
 var day = 0;
 var dayPrice = 1;
 var dayBuild = 0;
-var tempTime = 0;
+}
+else {
+  var sec = parseFloat(x[0])
+  var secPerSec = parseFloat(x[1]);
+  var secPrice = parseFloat(x[2]);
+  var tick = 1000/20;
+  var min = parseFloat(x[3]);
+  var minPrice = parseFloat(x[4]);
+  var minBuild = parseFloat(x[5]);
+  var hou = parseFloat(x[6]);
+  var houPrice = parseFloat(x[7]);
+  var houBuild = parseFloat(x[8]);
+  var time = parseFloat(x[9]);
+  var day = parseFloat(x[10]);
+  var dayPrice = parseFloat(x[11]);
+  var dayBuild = parseFloat(x[12]);
+}
 setInterval(function(){
+  document.cookie = "everything="+[sec, secPerSec,secPrice,min,minPrice,minBuild,hou,houPrice,houBuild,time,day,dayPrice,dayBuild].toString();
   time++;
-  tempTime = time;
   secPerSec = secPerSec + minBuild*2/tick;
   sec = sec + secPerSec*2/tick;
   minBuild = minBuild + houBuild*2/tick;
   houBuild = houBuild +dayBuild*2/tick;
-  minsPerMin = 60/((-1 + Math.sqrt(1-4*minBuild*-60))/(minBuild));
   document.getElementById("seconds").innerHTML = Math.round(sec);
   document.getElementById("secPerSecPrice").innerHTML = secPrice;
   document.getElementById("secPerSec").innerHTML = Math.round(secPerSec);

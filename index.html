@@ -7,10 +7,21 @@
   </head>
   <body>
     <script type = "text/javascript" src="index.js"></script>
-    <p>You have been playing for <span id = "dayTime"></span> days, <span id = "hourTime"></span> hours, <span id = "minTime"></span> minutes and <span id = "secondTime"></span> seconds.</p>
+    <p>You have been playing for <span id = "dayTime"></span> days, <span id = "hourTime"></span> hours, <span id = "minTime"></span> minutes and <span id = "secondTime"></span> seconds. </p>
     <p>You have
     <span id="seconds"></span>
-    seconds.</p>
+    seconds. <button onclick = "if (confirm('Are you sure you want to reset all progress?')){sec = 1;secPerSec = 0;
+secPrice = 1;
+min = 0;
+minPrice = 1;
+minBuild = 0;
+hou = 0;
+houPrice = 1;
+houBuild = 0;
+time = 0;
+day = 0;
+dayPrice = 1;
+dayBuild = 0;}">Hard Reset</button>
     <p> You are getting <span id = "secPerSec"></span> seconds per second.</p>
     <button onclick = "if (sec >= secPrice){
     sec = sec - secPrice;
