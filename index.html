@@ -10,38 +10,29 @@
     <p>You have been playing for <span id = "dayTime"></span> days, <span id = "hourTime"></span> hours, <span id = "minTime"></span> minutes and <span id = "secondTime"></span> seconds. </p>
     <p>You have
     <span id="seconds"></span>
-    seconds. <button onclick = "if (confirm('Are you sure you want to reset all progress?')){sec = 1;secPerSec = 0;
-secPrice = 1;
-min = 0;
-minPrice = 1;
-minBuild = 0;
-hou = 0;
-houPrice = 1;
-houBuild = 0;
-time = 0;
-day = 0;
-dayPrice = 1;
-dayBuild = 0;}">Hard Reset</button>
+    seconds. <button onclick = "if (confirm('Are you sure you want to reset all progress?')){initialize()}">Hard Reset</button>
     <p> You are getting <span id = "secPerSec"></span> seconds per second.</p>
     <button onclick = "if (sec >= secPrice){
     sec = sec - secPrice;
-    secPerSec = secPerSec + 1;
+    secPerSec += manualSecIncrease;
     secPrice = secPrice*2;}"
-  >+1 Second per Second.</button> Cost: <span id = "secPerSecPrice" ></span> seconds.
+  >+<span id = "manualSeconds"></span> Second per Second.</button> Cost: <span id = "secPerSecPrice" ></span> seconds.
     <p id = "numberMin">You have
     <span id="minutes"></span>
     minutes, and <span id = "minBuilds"></span> time accelerators.</p>
         <p id = "minButton"><button type="button" onclick = "if (min >= minPrice){
     min = min - minPrice;
     minBuild = minBuild+ 1;
-    minPrice = minPrice*2;}">Time Accelerator </button> Cost: <span id = "minPerSecPrice"></span> minutes.</p>
+    minPrice = minPrice*2;
+    manualMin++;}">Time Accelerator </button> Cost: <span id = "minPerSecPrice"></span> minutes.
     <p id = "numberHour">You have
     <span id="hours"></span>
     hours, and <span id = "houBuilds"></span> hour builds.</p>
         <p id = "hourButton"><button type="button" onclick = "if (hou >= houPrice){
     hou = hou - houPrice;
     houBuild = houBuild+ 1;
-    houPrice = houPrice*2;}">Hour Build </button> Cost: <span id = "houPerSecPrice"></span> hours.</p>
+    houPrice = houPrice*2;
+    manualHou++;}">Hour Build </button> Cost: <span id = "houPerSecPrice"></span> hours. 
     <p id = "numberDay">You have
     <span id="days"></span>
     days, and <span id = "dayBuilds"></span> day builds.</p>
