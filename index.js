@@ -2,7 +2,8 @@ function getCookieValue(a) {
     var b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)');
     return b ? b.pop() : '';
 }
-  var sec;
+
+var sec;
 var secPerSec;
 var secPrice;
 var tick;
@@ -65,6 +66,47 @@ else {
   var accelDouble = x[15] == 'true';
   var manualMin = parseFloat(x[16]);
 }
+
+function resetGame() {
+  if (confirm('Are you sure you want to reset all progress?')) {
+    initialize()
+  }
+}
+
+function buySecondsGenerator() {
+  if (sec >= secPrice) {
+    sec = sec - secPrice;
+    secPerSec += manualSecIncrease;
+    secPrice = secPrice*2;
+  }
+}
+
+function buyMinutesGenerator() {
+  if (min >= minPrice) {
+    min = min - minPrice;
+    minBuild = minBuild+ 1;
+    minPrice = minPrice*2;
+    manualMin++;
+  }
+}
+
+function buyHoursGenerator() {
+  if (hou >= houPrice) {
+    hou = hou - houPrice;
+    houBuild = houBuild+ 1;
+    houPrice = houPrice*2;
+    manualHou++;
+  }
+}
+
+function buyDaysGenerator() {
+  if (day >= dayPrice){
+    day = day - dayPrice;
+    dayBuild = dayBuild+ 1;
+    dayPrice = dayPrice*2;
+  }
+}
+
 setInterval(function(){
   document.cookie = "everything="+[sec, secPerSec,secPrice,min,minPrice,minBuild,hou,houPrice,houBuild,time,day,dayPrice,dayBuild,manualHou, secondGain, accelDouble, manualMin].toString();
   time++;

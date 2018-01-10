@@ -1,0 +1,56 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  margin-bottom: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1.5rem;
+}
+
+@media screen and (max-width: 668px) {
+  .container {
+    width: 95%;
+  }
+}
+
+@media screen and (min-width: 669px) {
+  .container {
+    width: 70%;
+  }
+}
+
+.segment {
+  margin: 0.75rem 0;
+}
+
+.segment:first-child {
+  margin-top: 0;
+}
+
+.segment:last-child {
+  margin-bottom: 0;
+}
+
+.button {
+  background: hsl(0, 0%, 85%);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 0.33rem 0.75rem;
+}
+
+.button:hover,
+.button:focus {
+  background: hsl(0, 0%, 77.5%);
+}
+
+.button:active {
+  background: hsl(0, 0%, 72.5%)
+}
