@@ -4,18 +4,51 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Time Incremental</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
+    <div class="container">
+      <div class="segment">
+        <div>
+          You have been playing for <span id="dayTime"></span> days, <span id="hourTime"></span> hours, <span id="minTime"></span> minutes and <span id="secondTime"></span> seconds.
+        </div>
+        <div>
+          You have <span id="seconds"></span> seconds. <button class="button" onclick="resetGame()">Hard Reset</button>
+        </div>
+      </div>
+      <div class="segment">
+        <div>
+          You are getting <span id="secPerSec"></span> seconds per second.
+        </div>
+        <div>
+          <button class="button" onclick="buySecondsGenerator()">+<span id="manualSeconds"></span> Second per Second.</button> Cost: <span id="secPerSecPrice" ></span> seconds.
+        </div>
+      </div>
+      <div class="segment">
+        <div id="numberMin">
+          You have <span id="minutes"></span> minutes, and <span id="minBuilds"></span> time accelerators.
+        </div>
+        <div id="minButton">
+          <button class="button" type="button" onclick="buyMinutesGenerator()">Time Accelerator </button> Cost: <span id="minPerSecPrice"></span> minutes.
+        </div>
+      </div>
+      <div class="segment">
+        <div id="numberHour">
+          You have <span id="hours"></span> hours, and <span id = "houBuilds"></span> clock factories.
+        </div>
+        <div id="hourButton">
+          <button class="button" type="button" onclick="buyHoursGenerator()">Clock Factory </button> Cost: <span id="houPerSecPrice"></span> hours.
+        </div>
+      </div>
+      <div class="segment">
+        <div id="numberDay">
+          You have <span id="days"></span> days, and <span id = "dayBuilds"></span> calendar flippers.
+        </div>
+        <div id="dayButton">
+          <button class="button" type="button" onclick="buyDaysGenerator()">Calendar Flipper </button> Cost: <span id="dayPerSecPrice"></span> days.
+        </div>
+      </div>
+    </div>
     <script type = "text/javascript" src="index.js"></script>
-    <p>You have been playing for <span id="dayTime"></span> days, <span id="hourTime"></span> hours, <span id="minTime"></span> minutes and <span id="secondTime"></span> seconds.</p>
-    <p>You have <span id="seconds"></span> seconds. <button onclick="resetGame()">Hard Reset</button></p>
-    <p> You are getting <span id="secPerSec"></span> seconds per second.</p>
-    <p><button onclick="buySecondsGenerator()">+<span id="manualSeconds"></span> Second per Second.</button> Cost: <span id="secPerSecPrice" ></span> seconds.</p>
-    <p id="numberMin">You have <span id="minutes"></span> minutes, and <span id="minBuilds"></span> time accelerators.</p>
-    <p id="minButton"><button type="button" onclick="buyMinutesGenerator()">Time Accelerator </button> Cost: <span id="minPerSecPrice"></span> minutes.</p>
-    <p id="numberHour">You have <span id="hours"></span> hours, and <span id = "houBuilds"></span> clock factories.</p>
-    <p id="hourButton"><button type="button" onclick="buyHoursGenerator()">Clock Factory </button> Cost: <span id="houPerSecPrice"></span> hours.</p>
-    <p id="numberDay">You have <span id="days"></span> days, and <span id = "dayBuilds"></span> calendar flippers.</p>
-    <p id="dayButton"><button type="button" onclick="buyDaysGenerator()">Calendar Flipper </button> Cost: <span id="dayPerSecPrice"></span> days.</p>
   </body>
 </html>
