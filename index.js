@@ -60,10 +60,10 @@ else {
   var day = parseFloat(x[10]);
   var dayPrice = parseFloat(x[11]);
   var dayBuild = parseFloat(x[12]);
-  var manualHou = parseInt(x[13]);
+  var manualHou = parseFloat(x[13]);
   var secondGain = x[14] == 'true';
   var accelDouble = x[15] == 'true';
-  var manualMin = x[16];
+  var manualMin = parseFloat(x[16]);
 }
 setInterval(function(){
   document.cookie = "everything="+[sec, secPerSec,secPrice,min,minPrice,minBuild,hou,houPrice,houBuild,time,day,dayPrice,dayBuild,manualHou, secondGain, accelDouble, manualMin].toString();
