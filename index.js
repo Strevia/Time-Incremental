@@ -145,6 +145,7 @@ setInterval(function(){
     hou = 0;
     houPrice = 1;
     houBuild = 0;
+      manualHou = 0;
     day++;
   }
 }, tick);
