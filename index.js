@@ -1,7 +1,3 @@
-function getCookieValue(a) {
-    var b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)');
-    return b ? b.pop() : '';
-}
 
 var sec;
 var secPerSec;
@@ -42,8 +38,8 @@ secondGain = true;
 accelDouble = true;
 manualMin = 0;
 }
-var x = getCookieValue("everything").split(',');
-if(x.length === 1){
+var x = localSorage.getItem("everything");
+if(x === null){
   initialize()
 }
 else {
@@ -108,7 +104,7 @@ function buyDaysGenerator() {
 }
 
 setInterval(function(){
-  document.cookie = "everything="+[sec, secPerSec,secPrice,min,minPrice,minBuild,hou,houPrice,houBuild,time,day,dayPrice,dayBuild,manualHou, secondGain, accelDouble, manualMin].toString();
+  localStorage.setItem("everything",[sec, secPerSec,secPrice,min,minPrice,minBuild,hou,houPrice,houBuild,time,day,dayPrice,dayBuild,manualHou, secondGain, accelDouble, manualMin]);
   time++;
   secPerSec = secPerSec + minBuild*2/tick;
   sec = sec + secPerSec*2/tick;
