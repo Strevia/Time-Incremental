@@ -38,7 +38,7 @@ secondGain = true;
 accelDouble = true;
 manualMin = 0;
 }
-var x = localSorage.getItem("everything");
+var x = localStorage.getItem("everything");
 if(x === null){
   initialize()
 }
