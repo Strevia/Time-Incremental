@@ -43,6 +43,7 @@ if(x === null){
   initialize()
 }
 else {
+  x = x.split(',');
   var sec = parseFloat(x[0])
   var secPerSec = parseFloat(x[1]);
   var secPrice = parseFloat(x[2]);
