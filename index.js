@@ -125,8 +125,8 @@ function loadGame(saveInput){
     year = parseFloat(x[32]) || 0;
     manualDay = parseFloat(x[33]) || 0;
 }
-x = localStorage.getItem("everything");
-if (localStorage.getItem("everything") === null){
+x = localStorage.getItem("everythin");
+if (localStorage.getItem("everythin") === null){
 initialize();
 }
 else {
@@ -247,9 +247,8 @@ else {
       halfDay = true
     }
   }
- document.getElementById("defaultTab").click()
   setInterval(function(){
-    localStorage.setItem("everything",[sec, secPerSec,secPrice,min,minPrice,minBuild,hou,houPrice,houBuild,time,day,dayPrice,dayBuild,manualHou, secondGain, accelDouble, manualMin, week, weekShown, monthsUnlocked, month, secondsEarned, multiplier, increased, config, secAutoOn, minAutoOn, houAutoOn, timer, realTime, halfDay, yearsShown, year, manualDay].toString());
+    localStorage.setItem("everythin",[sec, secPerSec,secPrice,min,minPrice,minBuild,hou,houPrice,houBuild,time,day,dayPrice,dayBuild,manualHou, secondGain, accelDouble, manualMin, week, weekShown, monthsUnlocked, month, secondsEarned, multiplier, increased, config, secAutoOn, minAutoOn, houAutoOn, timer, realTime, halfDay, yearsShown, year, manualDay].toString());
     saveFile = btoa(localStorage.getItem("everything"))
     time++;
     realTime = new Date(secondsEarned*20+startingTime);
