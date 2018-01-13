@@ -492,6 +492,7 @@ setInterval(function () {
     realHourEl.innerHTML = ('0' + realTime.getHours()).slice(-2);
     realMinuteEl.innerHTML = ('0' + realTime.getMinutes()).slice(-2);
     realSecondEl.innerHTML = ('0' + realTime.getSeconds()).slice(-2);
+    realMonthEl.innerHTML = mon;
     timerTabEl.style.display = 'block';
   } else {
     timerBuyerEl.style.background = '#D0D0D0';
