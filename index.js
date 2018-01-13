@@ -87,7 +87,7 @@ openTab(event, "defaultTab");
  yearsShown = false;
  year = 0;
  manualDay = 0;
- openTab("event, "defaultTab");
+ openTab(event, "defaultTab");
   }
 function loadGame(saveInput){
    x = saveInput
