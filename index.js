@@ -12,7 +12,59 @@ function openTab(evt, cityName) {
   document.getElementById(cityName).style.display = 'block';
   evt.currentTarget.className += ' active';
 }
-document.getElementById('defaultTab').click();
+
+const defaultTabEl = document.getElementById('defaultTab');
+const secondsEl = document.getElementById('seconds');
+const secPerSecPriceEl = document.getElementById('secPerSecPrice');
+const secPerSecEl = document.getElementById('secPerSec');
+const minutesEl = document.getElementById('minutes');
+const minPerSecPriceEl = document.getElementById('minPerSecPrice');
+const minBuildsEl = document.getElementById('minBuilds');
+const hoursEl = document.getElementById('hours');
+const houPerSecPriceEl = document.getElementById('houPerSecPrice');
+const houBuildsEl = document.getElementById('houBuilds');
+const daysEl = document.getElementById('days');
+const dayPerSecPriceEl = document.getElementById('dayPerSecPrice');
+const dayBuildsEl = document.getElementById('dayBuilds');
+const dayTimeEl = document.getElementById('dayTime');
+const hourTimeEl = document.getElementById('hourTime');
+const minTimeEl = document.getElementById('minTime');
+const secondTimeEl = document.getElementById('secondTime');
+const manualSecondsEl = document.getElementById('manualSeconds');
+const weeksEl = document.getElementById('weeks');
+const yearCounterEl = document.getElementById('yearCounter');
+const cal = document.getElementById('currentMonth');
+const calD = document.getElementById('monthDays');
+const numberMinEl = document.getElementById('numberMin');
+const minButtonEl = document.getElementById('minButton');
+const numberHourEl = document.getElementById('numberHour');
+const hourButtonEl = document.getElementById('hourButton');
+const numberDayEl = document.getElementById('numberDay');
+const dayButtonEl = document.getElementById('dayButton');
+const weekTabEl = document.getElementById('weekTab');
+const calendarButtonEl = document.getElementById('calendarButton');
+const monthBuyerEl = document.getElementById('monthBuyer');
+const buyMultiplierEl = document.getElementById('buyMultiplier');
+const configButtonEl = document.getElementById('configButton');
+const configTabEl = document.getElementById('configTab');
+const limitIncreaseButtonEl = document.getElementById('limitIncreaseButton');
+const houAutoEl = document.getElementById('houAuto');
+const minAutoEl = document.getElementById('minAuto');
+const secAutoEl = document.getElementById('secAuto');
+const halfDayBuyerEl = document.getElementById('halfDayBuyer');
+const timerBuyerEl = document.getElementById('timerBuyer');
+const realDateEl = document.getElementById('realDate');
+const realYearEl = document.getElementById('realYear');
+const realHourEl = document.getElementById('realHour');
+const realMinuteEl = document.getElementById('realMinute');
+const realSecondEl = document.getElementById('realSecond');
+const timerTabEl = document.getElementById('timerTab');
+const yearTabEl = document.getElementById('yearTab');
+
+let x;
+
+defaultTabEl.click();
+
 var sec;
 var secPerSec;
 var secPrice;
@@ -41,7 +93,7 @@ var multiplier;
 var increased;
 var secLimit;
 var config;
-var saveFile;
+// var saveFile;
 var secAutoOn;
 var minAutoOn;
 var houAutoOn;
@@ -52,8 +104,6 @@ var halfDay;
 var yearsShown;
 var year;
 var manualDay;
-
-let calD;
 
 function initialize() {
   sec = 1;
@@ -91,7 +141,7 @@ function initialize() {
   yearsShown = false;
   year = 0;
   manualDay = 0;
-  document.getElementById('defaultTab').click();
+  defaultTabEl.click();
 }
 
 function loadGame(saveInput) {
@@ -131,7 +181,7 @@ function loadGame(saveInput) {
   year = parseFloat(x[32]) || 0;
   manualDay = parseFloat(x[33]) || 0;
 }
-let x = localStorage.getItem('everythin');
+x = localStorage.getItem('everythin');
 if (localStorage.getItem('everythin') === null) {
   initialize();
 } else {
@@ -222,8 +272,8 @@ function getConfig() {
 
 // eslint-disable-next-line no-unused-vars
 function copySave() {
+  const saveFile = btoa(localStorage.getItem('everything'));
   prompt('Save Data:', saveFile);
-
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -233,7 +283,7 @@ function importSave() {
     importing = atob(importing);
     loadGame(importing.split(','));
   } catch (err) {
-    document.getElementById('defaultTab').click();
+    defaultTabEl.click();
   }
 }
 
@@ -278,7 +328,8 @@ function halfDayBuy() {
 }
 setInterval(function () {
   localStorage.setItem('everythin', [sec, secPerSec, secPrice, min, minPrice, minBuild, hou, houPrice, houBuild, time, day, dayPrice, dayBuild, manualHou, secondGain, accelDouble, manualMin, week, weekShown, monthsUnlocked, month, secondsEarned, multiplier, increased, config, secAutoOn, minAutoOn, houAutoOn, timer, realTime, halfDay, yearsShown, year, manualDay].toString());
-  saveFile = btoa(localStorage.getItem('everything'));
+  // No need to do this every tick, since saveFile is only used when you export. Makes more sense to just generate the string extemporaneously.
+  // saveFile = btoa(localStorage.getItem('everything'));
   time++;
   realTime = new Date(secondsEarned * 20 + startingTime);
   secPerSec += (minBuild * 2 + (multiplier * Math.log(secondsEarned) || 0)) / tick;
@@ -289,32 +340,32 @@ setInterval(function () {
   dayBuild += year * 2 / tick;
   manualSecIncrease = Math.floor(Math.pow(2, manualMin));
   secLimit = 60 + (manualHou * secondGain * 60) + (increased * manualMin * 60) + (60 * halfDay) + (120 * manualDay);
-  document.getElementById('seconds').innerHTML = Math.round(sec);
-  document.getElementById('secPerSecPrice').innerHTML = secPrice;
-  document.getElementById('secPerSec').innerHTML = Math.round(secPerSec);
-  document.getElementById('minutes').innerHTML = Math.round(min);
-  document.getElementById('minPerSecPrice').innerHTML = Math.round(minPrice);
-  document.getElementById('minBuilds').innerHTML = Math.round(minBuild);
-  document.getElementById('hours').innerHTML = Math.round(hou);
-  document.getElementById('houPerSecPrice').innerHTML = Math.round(houPrice);
-  document.getElementById('houBuilds').innerHTML = Math.round(houBuild);
-  document.getElementById('days').innerHTML = Math.round(day);
-  document.getElementById('dayPerSecPrice').innerHTML = Math.round(dayPrice);
-  document.getElementById('dayBuilds').innerHTML = Math.round(dayBuild);
-  document.getElementById('dayTime').innerHTML = Math.floor(time / 1728000);
-  document.getElementById('hourTime').innerHTML = Math.floor(time / 72000 % 24);
-  document.getElementById('minTime').innerHTML = Math.floor(time / (1200) % 60);
-  document.getElementById('secondTime').innerHTML = Math.floor(time / 20 % 60);
-  document.getElementById('manualSeconds').innerHTML = manualSecIncrease;
-  document.getElementById('weeks').innerHTML = week;
-  document.getElementById('yearCounter').innerHTML = year;
+  secondsEl.innerHTML = Math.round(sec);
+  secPerSecPriceEl.innerHTML = secPrice;
+  secPerSecEl.innerHTML = Math.round(secPerSec);
+  minutesEl.innerHTML = Math.round(min);
+  minPerSecPriceEl.innerHTML = Math.round(minPrice);
+  minBuildsEl.innerHTML = Math.round(minBuild);
+  hoursEl.innerHTML = Math.round(hou);
+  houPerSecPriceEl.innerHTML = Math.round(houPrice);
+  houBuildsEl.innerHTML = Math.round(houBuild);
+  daysEl.innerHTML = Math.round(day);
+  dayPerSecPriceEl.innerHTML = Math.round(dayPrice);
+  dayBuildsEl.innerHTML = Math.round(dayBuild);
+  dayTimeEl.innerHTML = Math.floor(time / 1728000);
+  hourTimeEl.innerHTML = Math.floor(time / 72000 % 24);
+  minTimeEl.innerHTML = Math.floor(time / (1200) % 60);
+  secondTimeEl.innerHTML = Math.floor(time / 20 % 60);
+  manualSecondsEl.innerHTML = manualSecIncrease;
+  weeksEl.innerHTML = week;
+  yearCounterEl.innerHTML = year;
   if (!(sec >= 30 || minBuild > 0 || min > 0)) {
-    document.getElementById('numberMin').style.display = 'none';
-    document.getElementById('minButton').style.display = 'none';
+    numberMinEl.style.display = 'none';
+    minButtonEl.style.display = 'none';
     //document.getElementById("minUpgrade").style.display = "none";
   } else {
-    document.getElementById('numberMin').style.display = 'block';
-    document.getElementById('minButton').style.display = 'block';
+    numberMinEl.style.display = 'block';
+    minButtonEl.style.display = 'block';
     if (!accelDouble) {
       //document.getElementById("minUpgrade").style.display = "block"
     } else {
@@ -322,12 +373,12 @@ setInterval(function () {
     }
   }
   if (!(min >= 30 || houBuild > 0 || hou > 0)) {
-    document.getElementById('numberHour').style.display = 'none';
-    document.getElementById('hourButton').style.display = 'none';
+    numberHourEl.style.display = 'none';
+    hourButtonEl.style.display = 'none';
     //document.getElementById("breakSeconds").style.display = "none";
   } else {
-    document.getElementById('numberHour').style.display = 'block';
-    document.getElementById('hourButton').style.display = 'block';
+    numberHourEl.style.display = 'block';
+    hourButtonEl.style.display = 'block';
     if (!secondGain) {
       //document.getElementById("breakSeconds").style.display = "block";
     } else {
@@ -335,69 +386,69 @@ setInterval(function () {
     }
   }
   if (!(hou >= 24 || dayBuild > 0 || day > 0)) {
-    document.getElementById('numberDay').style.display = 'none';
-    document.getElementById('dayButton').style.display = 'none';
+    numberDayEl.style.display = 'none';
+    dayButtonEl.style.display = 'none';
   } else {
-    document.getElementById('numberDay').style.display = 'block';
-    document.getElementById('dayButton').style.display = 'block';
+    numberDayEl.style.display = 'block';
+    dayButtonEl.style.display = 'block';
   }
   if (!weekShown) {
-    document.getElementById('defaultTab').style.display = 'none';
-    document.getElementById('weekTab').style.display = 'none';
+    defaultTabEl.style.display = 'none';
+    weekTabEl.style.display = 'none';
   } else {
-    document.getElementById('defaultTab').style.display = 'inline-block';
-    document.getElementById('weekTab').style.display = 'inline-block';
+    defaultTabEl.style.display = 'inline-block';
+    weekTabEl.style.display = 'inline-block';
   }
   if (monthsUnlocked) {
-    document.getElementById('calendarButton').style.background = '#7F7F7F';
-    document.getElementById('monthBuyer').style.display = 'block';
+    calendarButtonEl.style.background = '#7F7F7F';
+    monthBuyerEl.style.display = 'block';
   } else {
-    document.getElementById('monthBuyer').style.display = 'none';
-    document.getElementById('calendarButton').style.background = '#D0D0D0';
+    monthBuyerEl.style.display = 'none';
+    calendarButtonEl.style.background = '#D0D0D0';
   }
   if (multiplier) {
-    document.getElementById('buyMultiplier').style.background = '#7F7F7F';
+    buyMultiplierEl.style.background = '#7F7F7F';
   } else {
-    document.getElementById('buyMultiplier').style.background = '#D0D0D0';
+    buyMultiplierEl.style.background = '#D0D0D0';
   }
   if (!config) {
-    document.getElementById('configTab').style.display = 'none';
-    document.getElementById('configButton').style.background = '#D0D0D0';
+    configTabEl.style.display = 'none';
+    configButtonEl.style.background = '#D0D0D0';
   } else {
-    document.getElementById('configTab').style.display = 'inline-block';
-    document.getElementById('configButton').style.background = '#7F7F7F';
+    configTabEl.style.display = 'inline-block';
+    configButtonEl.style.background = '#7F7F7F';
   }
   if (increased) {
-    document.getElementById('limitIncreaseButton').style.background = '#7F7F7F';
+    limitIncreaseButtonEl.style.background = '#7F7F7F';
   } else {
-    document.getElementById('limitIncreaseButton').style.background = '#D0D0D0';
+    limitIncreaseButtonEl.style.background = '#D0D0D0';
   }
   if (houAutoOn) {
-    document.getElementById('houAuto').style.background = '#7F7F7F';
+    houAutoEl.style.background = '#7F7F7F';
     buyHoursGenerator();
   } else {
-    document.getElementById('houAuto').style.background = '#D0D0D0';
+    houAutoEl.style.background = '#D0D0D0';
   }
   if (minAutoOn) {
-    document.getElementById('minAuto').style.background = '#7F7F7F';
+    minAutoEl.style.background = '#7F7F7F';
     buyMinutesGenerator();
   } else {
-    document.getElementById('minAuto').style.background = '#D0D0D0';
+    minAutoEl.style.background = '#D0D0D0';
   }
   if (secAutoOn) {
-    document.getElementById('secAuto').style.background = '#7F7F7F';
+    secAutoEl.style.background = '#7F7F7F';
     buySecondsGenerator();
   } else {
-    document.getElementById('secAuto').style.background = '#D0D0D0';
+    secAutoEl.style.background = '#D0D0D0';
   }
   if (halfDay) {
-    document.getElementById('halfDayBuyer').style.background = '#7F7F7F';
+    halfDayBuyerEl.style.background = '#7F7F7F';
   } else {
-    document.getElementById('halfDayBuyer').style.background = '#D0D0D0';
+    halfDayBuyerEl.style.background = '#D0D0D0';
   }
   if (timer) {
-    document.getElementById('timerBuyer').style.background = '#7F7F7F';
-    cal = document.getElementById('realMonth');
+    timerBuyerEl.style.background = '#7F7F7F';
+    // cal = document.getElementById('realMonth');
     let mon = realTime.getMonth();
     switch (mon) {
       case 0:
@@ -436,23 +487,23 @@ setInterval(function () {
       case 11:
         cal.innerHTML = 'December';
     }
-    document.getElementById('realDate').innerHTML = realTime.getDate();
-    document.getElementById('realYear').innerHTML = 'Year ' + (realTime.getYear() + 1900).toString();
-    document.getElementById('realHour').innerHTML = ('0' + realTime.getHours()).slice(-2);
-    document.getElementById('realMinute').innerHTML = ('0' + realTime.getMinutes()).slice(-2);
-    document.getElementById('realSecond').innerHTML = ('0' + realTime.getSeconds()).slice(-2);
-    document.getElementById('timerTab').style.display = 'block';
+    realDateEl.innerHTML = realTime.getDate();
+    realYearEl.innerHTML = 'Year ' + (realTime.getYear() + 1900).toString();
+    realHourEl.innerHTML = ('0' + realTime.getHours()).slice(-2);
+    realMinuteEl.innerHTML = ('0' + realTime.getMinutes()).slice(-2);
+    realSecondEl.innerHTML = ('0' + realTime.getSeconds()).slice(-2);
+    timerTabEl.style.display = 'block';
   } else {
-    document.getElementById('timerBuyer').style.background = '#D0D0D0';
-    document.getElementById('timerTab').style.display = 'none';
+    timerBuyerEl.style.background = '#D0D0D0';
+    timerTabEl.style.display = 'none';
   }
   if (yearsShown) {
-    document.getElementById('yearTab').style.display = 'inline-block';
+    yearTabEl.style.display = 'inline-block';
   } else {
-    document.getElementById('yearTab').style.display = 'none';
+    yearTabEl.style.display = 'none';
   }
-  let cal = document.getElementById('currentMonth');
-  calD = document.getElementById('monthDays');
+  // let cal = document.getElementById('currentMonth');
+  // calD = document.getElementById('monthDays');
   switch (month) {
     case 0:
       cal.innerHTML = 'January';
