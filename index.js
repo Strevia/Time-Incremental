@@ -11,7 +11,6 @@ function openTab(evt, cityName) {
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " active";
 }
- document.getElementById("defaultTab").click(); 
  var sec;
   var secPerSec;
   var secPrice;
