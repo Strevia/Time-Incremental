@@ -11,6 +11,7 @@ function openTab(evt, cityName) {
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " active";
 }
+openTab(event, "defaultTab");
  var sec;
   var secPerSec;
   var secPrice;
@@ -86,7 +87,7 @@ function openTab(evt, cityName) {
  yearsShown = false;
  year = 0;
  manualDay = 0;
- document.getElementById("defaultTab").click()
+ openTab("event, "defaultTab");
   }
 function loadGame(saveInput){
    x = saveInput
