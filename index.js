@@ -247,6 +247,7 @@ else {
       halfDay = true
     }
   }
+ document.getElementById("defaultTab").click()
   setInterval(function(){
     localStorage.setItem("everything",[sec, secPerSec,secPrice,min,minPrice,minBuild,hou,houPrice,houBuild,time,day,dayPrice,dayBuild,manualHou, secondGain, accelDouble, manualMin, week, weekShown, monthsUnlocked, month, secondsEarned, multiplier, increased, config, secAutoOn, minAutoOn, houAutoOn, timer, realTime, halfDay, yearsShown, year, manualDay].toString());
     saveFile = btoa(localStorage.getItem("everything"))
