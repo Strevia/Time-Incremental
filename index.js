@@ -453,47 +453,46 @@ setInterval(function () {
     let mon = realTime.getMonth();
     switch (mon) {
       case 0:
-        cal.innerHTML = 'January';
+        realMonthEl.innerHTML = 'January';
         break;
       case 1:
-        cal.innerHTML = 'February';
+        realMonthEl.innerHTML = 'February';
         break;
       case 2:
-        cal.innerHTML = 'March';
+        realMonthEl.innerHTML = 'March';
         break;
       case 3:
-        cal.innerHTML = 'April';
+        realMonthEl.innerHTML = 'April';
         break;
       case 4:
-        cal.innerHTML = 'May';
+        realMonthEl.innerHTML = 'May';
         break;
       case 5:
-        cal.innerHTML = 'June';
+        realMonthEl.innerHTML = 'June';
         break;
       case 6:
-        cal.innerHTML = 'July';
+        realMonthEl.innerHTML = 'July';
         break;
       case 7:
-        cal.innerHTML = 'August';
+        realMonthEl.innerHTML = 'August';
         break;
       case 8:
-        cal.innerHTML = 'September';
+        realMonthEl.innerHTML = 'September';
         break;
       case 9:
-        cal.innerHTML = 'October';
+        realMonthEl.innerHTML = 'October';
         break;
       case 10:
-        cal.innerHTML = 'November';
+        realMonthEl.innerHTML = 'November';
         break;
       case 11:
-        cal.innerHTML = 'December';
+        realMonthEl.innerHTML = 'December';
     }
     realDateEl.innerHTML = realTime.getDate();
     realYearEl.innerHTML = 'Year ' + (realTime.getYear() + 1900).toString();
     realHourEl.innerHTML = ('0' + realTime.getHours()).slice(-2);
     realMinuteEl.innerHTML = ('0' + realTime.getMinutes()).slice(-2);
     realSecondEl.innerHTML = ('0' + realTime.getSeconds()).slice(-2);
-    realMonthEl.innerHTML = mon;
     timerTabEl.style.display = 'block';
   } else {
     timerBuyerEl.style.background = '#D0D0D0';
