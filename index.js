@@ -273,7 +273,7 @@ function getConfig() {
 
 // eslint-disable-next-line no-unused-vars
 function copySave() {
-  const saveFile = btoa(localStorage.getItem('everything'));
+  const saveFile = btoa(localStorage.getItem('everythin'));
   prompt('Save Data:', saveFile);
 }
 
@@ -284,7 +284,7 @@ function importSave() {
     importing = atob(importing);
     loadGame(importing.split(','));
   } catch (err) {
-    loadGame(localStorage.getItem("everythin").split(','));
+    loadGame(localStorage.getItem('everythin').split(','));
   }
 }
 
