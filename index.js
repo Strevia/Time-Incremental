@@ -176,7 +176,7 @@ function loadGame(saveInput) {
   minAutoOn = x[26] === 'true';
   houAutoOn = x[27] === 'true';
   timer = x[28] === 'true';
-  realTime = parseFloat(x[29]);
+  realTime = parseFloat(x[29]) || 0;
   halfDay = x[30] === 'true';
   yearsShown = x[31] === 'true';
   year = parseFloat(x[32]) || 0;
@@ -284,7 +284,7 @@ function importSave() {
     importing = atob(importing);
     loadGame(importing.split(','));
   } catch (err) {
-    defaultTabEl.click();
+    loadGame(localStorage.getItem("everything").split(','));
   }
 }
 
