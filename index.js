@@ -234,7 +234,7 @@ function buyDaysGenerator() {
 
 // eslint-disable-next-line no-unused-vars
 function buyCalendar() {
-  if (week >= 4) {
+  if (week >= 4 && !monthsUnlocked) {
     week -= 4;
     monthsUnlocked = true;
   }
@@ -290,7 +290,7 @@ function importSave() {
 
 // eslint-disable-next-line no-unused-vars
 function buyHouAuto() {
-  if (week >= 2) {
+  if (week >= 2 && !houAutoOn) {
     week -= 2;
     houAutoOn = true;
   }
@@ -298,7 +298,7 @@ function buyHouAuto() {
 
 // eslint-disable-next-line no-unused-vars
 function buyMinAuto() {
-  if (week >= 3) {
+  if (week >= 3 && !minAutoOn) {
     week -= 3;
     minAutoOn = true;
   }
@@ -306,7 +306,7 @@ function buyMinAuto() {
 
 // eslint-disable-next-line no-unused-vars
 function buySecAuto() {
-  if (week >= 4) {
+  if (week >= 4 && secAutoOn) {
     week -= 4;
     secAutoOn = true;
   }
@@ -314,7 +314,7 @@ function buySecAuto() {
 
 // eslint-disable-next-line no-unused-vars
 function buyTimer() {
-  if (week >= 2) {
+  if (week >= 2 && !timer) {
     week -= 2;
     timer = true;
   }
@@ -322,7 +322,7 @@ function buyTimer() {
 
 // eslint-disable-next-line no-unused-vars
 function halfDayBuy() {
-  if (week >= 4) {
+  if (week >= 4 && !halfDay) {
     week -= 4;
     halfDay = true;
   }
