@@ -306,7 +306,7 @@ function buyMinAuto() {
 
 // eslint-disable-next-line no-unused-vars
 function buySecAuto() {
-  if (week >= 4 && secAutoOn) {
+  if (week >= 4 && !secAutoOn) {
     week -= 4;
     secAutoOn = true;
   }
