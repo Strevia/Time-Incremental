@@ -284,7 +284,7 @@ function importSave() {
     importing = atob(importing);
     loadGame(importing.split(','));
   } catch (err) {
-    loadGame(localStorage.getItem("everything").split(','));
+    loadGame(localStorage.getItem("everythin").split(','));
   }
 }
 
