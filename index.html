@@ -1,44 +1,119 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Time Incremental</title>
-  </head>
-  <body>
-    <script type = "text/javascript" src="index.js"></script>
-    <p>You have been playing for <span id = "dayTime"></span> days, <span id = "hourTime"></span> hours, <span id = "minTime"></span> minutes and <span id = "secondTime"></span> seconds. </p>
-    <p>You have
-    <span id="seconds"></span>
-    seconds. <button onclick = "if (confirm('Are you sure you want to reset all progress?')){initialize()}">Hard Reset</button>
-    <p> You are getting <span id = "secPerSec"></span> seconds per second.</p>
-    <button onclick = "if (sec >= secPrice){
-    sec = sec - secPrice;
-    secPerSec += manualSecIncrease;
-    secPrice = secPrice*2;}"
-  >+<span id = "manualSeconds"></span> Second per Second.</button> Cost: <span id = "secPerSecPrice" ></span> seconds.
-    <p id = "numberMin">You have
-    <span id="minutes"></span>
-    minutes, and <span id = "minBuilds"></span> time accelerators.</p>
-        <p id = "minButton"><button type="button" onclick = "if (min >= minPrice){
-    min = min - minPrice;
-    minBuild = minBuild+ 1;
-    minPrice = minPrice*2;
-    manualMin++;}">Time Accelerator </button> Cost: <span id = "minPerSecPrice"></span> minutes.
-    <p id = "numberHour">You have
-    <span id="hours"></span>
-    hours, and <span id = "houBuilds"></span> clock factories.</p>
-        <p id = "hourButton"><button type="button" onclick = "if (hou >= houPrice){
-    hou = hou - houPrice;
-    houBuild = houBuild+ 1;
-    houPrice = houPrice*2;
-    manualHou++;}">Clock Factory </button> Cost: <span id = "houPerSecPrice"></span> hours. 
-    <p id = "numberDay">You have
-    <span id="days"></span>
-    days, and <span id = "dayBuilds"></span> calendar flippers.</p>
-        <p id = "dayButton"><button type="button" onclick = "if (day >= dayPrice){
-    day = day - dayPrice;
-    dayBuild = dayBuild+ 1;
-    dayPrice = dayPrice*2;}">Calendar Flipper </button> Cost: <span id = "dayPerSecPrice"></span> days.</p>
-  </body>
+
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+
+		<title>Time Incremental</title>
+		
+		<!--<link rel="stylesheet" href="index.css">-->
+		
+		<style>
+			
+			.block:not(.shown) { display: none; }
+			
+		</style>
+
+	</head>
+
+	<body>
+
+		<p>
+			
+			You have been playing for
+			
+			<span class="played days"></span> day<span class="played days ending"></span>, 
+			<span class="played hours"></span> hour<span class="played hours ending"></span>, 
+			<span class="played minutes"></span> minute<span class="played minutes ending"></span> and 
+			<span class="played seconds"></span> second<span class="played seconds ending"></span>.
+			
+		</p>
+		
+		<div class="seconds block shown">
+		
+			<p>You have <span class="seconds current"></span> seconds.</p>
+			
+			<p>You are getting <span class="seconds income"></span> seconds per second.</p>
+			
+			<p>
+				
+				<button onclick="buy('seconds')">
+				
+					+<span class="seconds manual"></span> second<span class="seconds ending"></span> per second
+					
+				</button>
+				
+				Cost: <span class="seconds cost"></span> seconds
+				
+			</p>
+			
+		</div>
+		
+		<div class="minutes block">
+			
+			<p class="minutes part">
+			
+				You have <span class="minutes current"></span> minutes, and <span class="minutes generators"></span> time accelerators.
+				
+			</p>
+			
+			<p class="minutes button">
+			
+				<button type="button" onclick="buy('minutes')">Time Accelerator</button>
+				
+				Cost: <span class="minutes cost"></span> minutes
+				
+			</p>
+			
+		</div>
+		
+		<div class="hours block">
+			
+			<p class="hours part">
+			
+				You have <span class="hours current"></span> hours, and <span class="hours generators"></span> clock factories.
+				
+			</p>
+
+			<p class="hours button">
+			
+				<button type="button" onclick="buy('hours')">Clock Factory</button>
+				
+				Cost: <span class="hours cost"></span> hours
+				
+			</p>
+			
+		</div>
+		
+		<div class="days block">
+			
+			<p class="days part">
+			
+				You have <span class="days current"></span> days, and <span class="days generators"></span> calendar flippers.
+				
+			</p>
+
+			<p class="days button">
+			
+				<button type="button" onclick="buy('days')">Calendar Flipper</button>
+				
+				Cost: <span class="days cost"></span> days
+				
+			</p>
+			
+		</div>		
+		
+		<footer>
+			
+			<button onclick="resetGame()">Hard Reset</button>
+			
+		</footer>
+
+
+	</body>
+
+	<script src="index.js"></script>
+
 </html>
