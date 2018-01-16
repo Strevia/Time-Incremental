@@ -4,120 +4,93 @@ var timeDefault = {
 		
 		current: 1,
 		income: 0,
-		price: 1,
+		cost: 1,
 		
-		manualIncrease: 0,
+		manual: 0,
+		
+		max: 60,
 		
 		gain: true
 		
 	},
 	
-	passed: 0,
+	played: 0,
 	
 	accelDouble: true,
 	
-	tick: 50 // ms
+	tick: 50
 	
 },
-time,
+	time,
+	
+	sessionStart = Date.now(),
+	
+	runGame = true, // for debug
+	version = [0, 0, 5],
+	
+	UIUpdateList = [
+		
+		'seconds.current',
+		'seconds.cost',
+		'seconds.income',
+		'seconds.manual',
+		
+		'minutes.current',
+		'minutes.generators',
+		'minutes.cost',
+		
+		'hours.current',
+		'hours.generators',
+		'hours.cost',
+		
+		'days.current',
+		'days.generators',
+		'days.cost'
+		
+	],
+	
+	units = ['minutes', 'hours', 'days'],
+	unitsComplete = ['seconds', ...units],
+	unitsMax = { minutes: 60, hours: 24, days: 7 };
 
-saveDataKeys = ['seconds.current', 'seconds.income', 'seconds.price', 'minutes.current', 'minutes.price', 'minutes.built', 'hours.current', 'hours.price', 'hours.built', 'passed', 'days.current', 'days.price', 'days.built', 'hours.manual', 'seconds.gain', 'accelDouble', 'minutes.manual'],
+units.forEach(unit => timeDefault[unit] = {
+	
+	current: 0,
+	generators: 0,
+	cost: 1,
+	
+	manual: 0,
+	
+	max: unitsMax[unit]
+	
+});
 
-units = ['minutes', 'hours', 'days'];
+initialize();
 
-units.forEach(unit => timeDefault[unit] = { current: 0, built: 0, price: 1, manual: 0 });
-
-requestInterval(() => {
+function onTick () {
 	
 	save();
 	
-	time.passed++;
+	time.played++;
 	
-	time.seconds.income += (time.minutes.built * 2) / time.tick;
-	time.seconds.current += (time.seconds.income * 2) / time.tick;
+	time.seconds.income += time.minutes.generators * 2 / time.tick;
+	time.seconds.current += time.seconds.income * 2 / time.tick;
 	
 	units.forEach((unit, index) => {
 		
-		if (index + 1 < units.length) { time[unit].built += (time[units[index + 1]] * 2) / time.tick }
+		if (index + 1 < units.length) { time[unit].generators += time[units[index + 1]].generators * 2 / time.tick; }
 		
-	};
+	});
 	
-	time.seconds.manualIncrease = Math.floor((time.accelDouble + 1) ** time.minutes.manual);
+	time.seconds.manual = Math.floor((time.accelDouble + 1) ** time.minutes.manual);
 	
-	// ! TEMPORARY !
-	
-	document.getElementById("seconds").innerHTML = Math.round(time.seconds.current);
-	document.getElementById("secPerSecPrice").innerHTML = time.seconds.price;
-	document.getElementById("secPerSec").innerHTML = Math.round(time.seconds.income);
-	
-	document.getElementById("minutes").innerHTML = Math.round(time.minutes.current);
-	document.getElementById("minPerSecPrice").innerHTML = Math.round(time.minutes.price);
-	document.getElementById("minBuilds").innerHTML = Math.round(time.minutes.built);
-	
-	document.getElementById("hours").innerHTML = Math.round(time.hours.current);
-	document.getElementById("houPerSecPrice").innerHTML = Math.round(time.hours.price);
-	document.getElementById("houBuilds").innerHTML = Math.round(time.hours.built);
-	
-	document.getElementById("days").innerHTML = Math.round(time.days.current);
-	document.getElementById("dayPerSecPrice").innerHTML = Math.round(time.days.price);
-	document.getElementById("dayBuilds").innerHTML = Math.round(time.days.built);
-	
-	document.getElementById("dayTime").innerHTML = Math.floor(time.passed / 1728000);
-	document.getElementById("hourTime").innerHTML = Math.floor(time.passed / 72000 % 24);
-	document.getElementById("minTime").innerHTML = Math.floor(time.passed / 1200 % 60);
-	document.getElementById("secondTime").innerHTML = Math.floor(time.passed / 20 % 60);
-	
-	document.getElementById("manualSeconds").innerHTML = time.seconds.manualIncrease;
-	
-	// ! TEMPORARY !
-	
-	if (!(time.seconds.current >= 30 || time.minutes.current + time.minutes.built > 0)) {
-		
-		setDisplay('#numberMin', 'none');
-		setDisplay('#minButton', 'none');
-		//setDisplay('#minUpgrade', 'none');
-		
-	} else {
-	
-		setDisplay('#numberMin', 'block');
-		setDisplay('#minButton', 'block');
-		//time.accelDouble ? setDisplay('#minUpgrade', 'none') : setDisplay('#minUpgrade', 'block');
-		
-	};
-	
-	if (!(time.minutes.current >= 30 || time.hours.current + time.hours.built > 0)) {
-	
-		setDisplay('#numberHour', 'none');
-		setDisplay('#hourButton', 'none');
-		//setDisplay('#breakSeconds', 'none');
-		
-	} else {
-	
-		setDisplay('#numberHour', 'block');
-		setDisplay('#hourButton', 'block');
-		//time.seconds.gain ? setDisplay('#breakSeconds', 'none') : setDisplay('#breakSeconds', 'block');
-		
-	};
-	
-	if (!(time.hours.current >= 24 || time.days.current + time.days.built > 0)) {
-	
-		setDisplay('#numberDay', 'none');
-		setDisplay('#dayButton', 'none');
-		
-	} else {
-	
-		setDisplay('#numberDay', 'block');
-		setDisplay('#dayButton', 'block');
-		
-	};
-	
-	// ! TEMPORARY ! end
+	updateUI();
 	
 	if (time.seconds.current >= (60 + time.hours.manual * time.seconds.gain * 60)) {
 		
 		time.seconds.current = 1;
 		time.seconds.income = 0;
-		time.seconds.price = 1;
+		time.seconds.cost = 1;
 		
 		time.minutes.current += time.hours.manual * time.seconds.gain + 1;
 		
@@ -125,7 +98,7 @@ requestInterval(() => {
 	
 	units.forEach((unit, index) => {
 		
-		if (time[unit].current >= 60) {
+		if (time[unit].current >= time[unit].max) {
 			
 			resetUnit(unit);
 			
@@ -135,7 +108,7 @@ requestInterval(() => {
 		
 	});
 	
-}, time.tick);
+};
 
 // GAME FUNCTIONS
 
@@ -143,115 +116,197 @@ function initialize () {
 	
 	time = deepCopy(timeDefault);
 	
-	let saveData = getCookieValue("everything").split(',');
+	load();
 	
-	if (saveData.length > 1) {
+	runGame && requestInterval(onTick, time.tick);
+	
+};
+
+function save () {
+	
+	let timeSaveCopy = deepCopy(time);
+	timeSaveCopy.version = version;
+	timeSaveCopy.played += timeInSession();
+	
+	localStorage.setItem('savedata', JSON.stringify(timeSaveCopy));
+
+};
+
+function load () {
+	
+	let saveData = JSON.parse(localStorage.getItem('savedata'));
+	
+	if (saveData !== null) {
 		
-		saveDataKeys.forEach((prop, index) => { justSet(time, prop, saveData[index]) });
+		if (saveData.version[1] !== version[1] || saveData.version[0] !== version[0]) {
 		
-		time.secondGain = !!time.secondGain;
-		time.accelDouble = !!time.accelDouble;
+			console.log('Time Incremental includes breaking changes since your last save. Starting from scratch');
+			
+			return;
+			
+		};
+		
+		Object.assign(time, saveData);
 		
 	};
 	
 };
 
-function save () {
-
-	let saveDataArray = saveDataKeys.map(prop => justGet(time, prop));
+function removeSaveData () { localStorage.removeItem('savedata') };
 	
-	document.cookie = 'everything=' + saveDataArray.toString();
+function resetUnit (unit) { time[unit] = deepCopy(timeDefault[unit]) };
+
+function resetGame () {
+	
+	if (confirm('Are you sure you want to reset all progress?')) {
+		
+		removeSaveData();
+		
+		initialize();
+		
+	};
 	
 };
 
-function resetUnit (unit) {
+function buy (unit) {
 	
-	time[unit] = deepCopy(timeDefault[unit]);
+	if (time[unit].current >= time[unit].cost) {
+		
+		time[unit].current -= time[unit].cost;
+		
+		time[unit].cost *= 2;
+		
+		if (unit === 'seconds') {
+		
+			time.seconds.income += time.seconds.manual
+			
+		} else {
+			
+			time[unit].generators++;		
+			
+			time[unit].manual++;
+			
+		};
+		
+	};
+	
+	
+	
+};
+
+function updateUI () {
+	
+	UIUpdateList.forEach(element => { query('.' + element).innerHTML = parseInt(get(time, element)) });
+	
+	timeCache = deepCopy(time);
+	
+	query('.seconds.ending').innerHTML = time.seconds.manual > 1 ? 's' : '';
+	
+	setUITimePlayed(); // includes plural endings
+	
+	unitsComplete.forEach((unit, index) => {
+		
+		let unitMoreThanHalf = time[unit].current >= time[unit].max / 2,
+			
+			nextUnit = units[index],
+			nextUnitPresent = nextUnit && time[nextUnit].current + time[nextUnit].generators > 0;
+		
+		if (unitMoreThanHalf || nextUnitPresent) showUnitBlock(nextUnit);
+		
+	});
+	
+};
+
+function setUITimePlayed () {
+	
+	let played = time.played + timeInSession(),
+		
+		timeParse = [
+			
+			Math.floor(played / 20 % 60),		/* seconds */
+			Math.floor(played / 1200 % 60),		/* minutes */
+			Math.floor(played / 72000 % 24),	/* hours */
+			Math.floor(played / 1728000)		/* days */
+			
+		];
+	
+	unitsComplete.forEach((unit, index) => {
+		
+		query('.' + unit + '.played').innerHTML = timeParse[index];
+		
+		let ending = timeParse[index] > 1 || timeParse[index] === 0 ? 's' : '';
+		
+		query('.' + unit + '.played.ending').innerHTML = ending;
+	
+	});
+	
 	
 };
 
 // UTILITY FUNCTIONS
 
-function getCookieValue (handle) {
+function deepCopy (source) { return JSON.parse(JSON.stringify(source)) };
 
-    var b = document.cookie.match('(^|;)\\s*' + handle + '\\s*=\\s*([^;]+)');
-    return b ? b.pop() : '';
-    
-};
+function query (element) { return document.querySelector(element) };
 
-function deepCopy (source) {
+function showUnitBlock (unit) { query('.' + unit + '.block').classList.add('shown') };
+
+function requestInterval (fn, delay) {
 	
-	return JSON.parse(JSON.stringify(source));
-	
-};
-
-function justSet(object, props, value) {
-
-	if (typeof props == 'string') { props = props.split('.') }
-	if (typeof props == 'symbol') { props = [props] }
-
-	var lastProp = props.pop();
-
-	if (!lastProp) { return false }
-
-	var thisProp;
-
-	while ((thisProp = props.shift())) {
-	
-		if (typeof object[thisProp] == 'undefined') { object[thisProp] = {} };
+	let requestAnimFrame = (function () {
 		
-		object = object[thisProp];
+		return window.requestAnimationFrame || function (callback, element) {
+			
+			window.setTimeout(callback, 1000 / 60);
+			
+    	};
 		
-		if (!object || typeof object != 'object') { return false };
+	})(),
+		
+		start = Date.now(),
+		handle = {};
+	
+	function loop() {
+		
+		handle.value = requestAnimFrame(loop);
+		
+		let current = Date.now(),
+			delta = current - start;
+		
+		if (delta >= delay) {
+			
+			fn();
+			
+			start = Date.now();
+			
+		};
 		
 	};
 	
-	object[lastProp] = value;
+	handle.value = requestAnimFrame(loop);
 	
-	return true;
-	
-}
-
-function justGet(obj, props) {
-  if (typeof props == 'string') {
-    props = props.split('.');
-  }
-  if (typeof props == 'symbol') {
-    props = [props];
-  }
-  var prop;
-  while ((prop = props.shift())) {
-    obj = obj[prop];
-    if (!obj) {
-      return obj;
-    }
-  }
-  return obj;
-};
-
-function setDisplay (element, value) {
-	
-	return document.querySelector(element).style.display = value;
+	return handle;
 	
 };
 
-function requestInterval (fn, delay) {
-  let requestAnimFrame = (function () {
-    return window.requestAnimationFrame || function (callback, element) {
-      window.setTimeout(callback, 1000 / 60);
-    };
-  })(),
-  start = new Date().getTime(),
-  handle = {};
-  function loop() {
-    handle.value = requestAnimFrame(loop);
-    let current = new Date().getTime(),
-    delta = current - start;
-    if (delta >= delay) {
-      fn.call();
-      start = new Date().getTime();
-    }
-  }
-  handle.value = requestAnimFrame(loop);
-  return handle;
+function get (obj, props) {
+	
+	if (typeof props == 'string') { props = props.split('.') };
+	
+	if (typeof props == 'symbol') { props = [props] };
+	
+	var prop;
+	
+	while ((prop = props.shift())) {
+		
+		obj = obj[prop];
+		
+		if (!obj) { return obj };
+		
+	};
+	
+	return obj;
+	
 };
+
+function timeInSession () { return (Date.now() - sessionStart) / 1000 };
