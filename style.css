@@ -1,4 +1,4 @@
- * {
+ /** {
    margin: 0;
    padding: 0;
  }
@@ -7,7 +7,7 @@
    font-family: Arial, sans-serif;
  }
  
- .container {
+ /*.container {
    margin-bottom: 1.5rem;
    margin-left: auto;
    margin-right: auto;
@@ -37,7 +37,10 @@
  .segment:last-child {
    margin-bottom: 0;
  }
- 
+ */
+ body {
+   font-family: Arial, sans-serif;
+ }
  .button {
    background: hsl(0, 0%, 85%);
    border: none;
@@ -49,12 +52,18 @@
  .button:hover,
  .button:focus {
    background: hsl(0, 0%, 77.5%);
+   outline: none;
  }
  
  .button:active {
    background: hsl(0, 0%, 72.5%)
- } 
-  .upgrade {
+   outline: none;
+ }
+ .upgrades {
     width: 150px; 
     height: 150px;
   }
+  .boxed {
+  border: 1px solid black ;
+  padding: 5px;
+}
