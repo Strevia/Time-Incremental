@@ -336,7 +336,7 @@ function updateUI () {
 	    	    cache[element] = get(time, element)
 	  }
 	  else {
-	    	    cache[element] = get(time, element)
+	    	    cache[element] = get(time, element) + ".bought"
 	    if (!get(time, element + ".bought")){
 	      query('.' + element).style.background = "#D0D0D0"
 	    }
