@@ -67,3 +67,32 @@
   border: 1px solid black ;
   padding: 5px;
 }
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+.tooltip .tooltiptext {
+    visibility: hidden;
+    
+    background-color: #555;
+    color: #fff;
+    display: inline-block;
+    width: 300px;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    position: absolute;
+    z-index: 0;
+    top: 100%;
+    left: 50%; 
+    margin-left: -60px;
+    /* Fade in tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
