@@ -8,7 +8,7 @@ var timeDefault = {
 		
 		manual: 0,
 		
-		max: 60,
+		max: [60, 'minutes'],
 		
 		gain: true,
 		
@@ -60,6 +60,10 @@ var timeDefault = {
     cost: 1,
     bought : false,
   },
+  doubleManualSecs : {
+    cost: 4,
+    bought: false,
+  },
 },
 },
 	time,
@@ -67,7 +71,7 @@ var timeDefault = {
 	sessionStart = Date.now(),
 	
 	runGame = true, // for debug
-	version = [0, 0, 5],
+	version = [0, 3, 0],
 	
 		cache = {},
 		
@@ -104,14 +108,31 @@ var timeDefault = {
 		'upgrades.secondAuto',
 		'upgrades.hourAuto',
 		'upgrades.multiplier',
-
+    'upgrades.doubleManualSecs',
+    
 		'months.name',
 		'months.cost',
+		
+		'decades.current',
+		'decades.generators',
+		'decades.cost',
+		
+		'centuries.current',
+		'centuries.generators',
+		'centuries.cost',
+		
+		'millenium.current',
+		'millenium.generators',
+		'millenium.cost',
+		
+		'cosmodecade.current',
+		'cosmodecade.cost',
 	],
 	
-	units = ['minutes', 'hours', 'days', 'years', 'weeks', 'months'];
+	units = ['minutes', 'hours', 'days', 'years', 'decades', 'centuries', 'millenium', 'weeks', 'months', 'cosmodecade'];
 	unitsComplete = ['seconds', ...units],
-	unitsMax = { minutes: 60, hours: 24, days: 365};
+	timeUnits = ['seconds', 'minutes', 'hours', 'days'];
+	unitsMax = { minutes: [60, 'hours'], hours: [24, 'days'], days: [365, 'years'], months: [12, 'years'], decades : [10, 'centuries'], centuries: [10, 'millenium']};
 
 units.forEach(unit => timeDefault[unit] = {
 	
@@ -122,10 +143,7 @@ units.forEach(unit => timeDefault[unit] = {
 	manual: 0,
 	
 	max: unitsMax[unit],
-	
-	entryUnit : false,
-	
-	entryGen : false,
+  showing : false,
 	
 });
 
@@ -150,21 +168,21 @@ function onTick () {
 		if (index + 1 < units.length) { time[unit].generators += (time[units[index + 1]].generators * 2 / time.tick)*(Math.pow(1.5,time.months.current)); }
 		
 	});
-	time.seconds.manual = Math.floor(Math.pow(2, time.minutes.manual));
+	time.seconds.manual = Math.floor(Math.pow(2*(1+time.upgrades.doubleManualSecs.bought), time.minutes.manual));
 	
 	updateUI();
-	time.seconds.max = (60 * (time.hours.manual + 1 + (time.days.manual * 2)));
-	time.hours.max = 24/(time.upgrades.halfDay.bought+1)
+	time.seconds.max[0] = (60 * (time.hours.manual + 1 + (time.days.manual * 2)));
+	time.hours.max[0] = 24/(time.upgrades.halfDay.bought+1)
 	if (time.upgrades.limitIncrease.bought){
-	  time.seconds.max += 60 * time.minutes.manual;
+	  time.seconds.max[0] += 60 * time.minutes.manual;
 	}
-	if (time.seconds.current >= time.seconds.max) {
+	if (time.seconds.current >= time.seconds.max[0]) {
 		
 		time.seconds.current = 1;
 		time.seconds.income = 0;
 		time.seconds.cost = 1;
 		
-		time.minutes.current += time.seconds.max/60;
+		time.minutes.current += time.seconds.max[0]/60;
 		
 		if (!time.minutes.entryUnit){
 		  //addEntry("Eureka! My new pieces all seemed to join together to form a bigger, more powerful piece. I wonder what will happen if I throw it on the ground...", true)
@@ -174,28 +192,27 @@ function onTick () {
 	};
 	
 	units.forEach((unit, index) => {
-	  if (time.months.current >= 12){
-	    time.years.current++;
-	    time.years.generators++;
-	    resetUnit('months')
-	  }
-		if (time[unit].current >= time[unit].max) {
-			if (!time[units[index+1]].entryUnit){
+	  try {
+		if (time[unit].current >= time[unit].max[0]) {
+			//if (!time[units[index+1]].entryUnit){
 			  //addEntry('The pieces have joined together. Interesting...', true)
-			  time[units[index+1]].entryUnit = true;
-			}
+			  //time[units[index+1]].entryUnit = true;
+			//}
 			time[unit].generators = 0;
-			time[unit].current -= time[unit].max
+			time[unit].current -= time[unit].max[0]
 			time[unit].manual = 0;
 			time[unit].cost = 1;
-			if (index + 1 < units.length) { time[units[index + 1]].current++ };
-			if (unit === 'days'){ 
+			get(time, time[unit].max[1]).current++;
+			if (time[unit].max[1] === 'years'){ 
 			  time.years.generators++ 
+			  time.days.generators = 0;
+			  time.days.price = 1;
 			  
 			};
 			
 			}
-		
+	  }
+	  catch(e){}
 	});
 	
 	Object.getOwnPropertyNames(time.upgrades).forEach(upgrade => {
@@ -214,10 +231,6 @@ function onTick () {
 function initialize () {
 	
 	time = deepCopy(timeDefault);
-	
-	time.printed.forEach(entry => {
-	  query('.diaryContent').innerHTML = query('.diaryContent').innerHTML + element
-	});
 	
 	load();
 	
@@ -251,7 +264,9 @@ function load () {
 			
 		}
 		
-		Object.assign(time, saveData);
+		for (let key in saveData){
+		  time[key] = saveData[key]
+		}
 		
 	};
 	
@@ -278,7 +293,7 @@ function exportGame() {
 }
 
 function importGame() {
-  time = JSON.parse(atob(prompt('Put save here (WILL OVERWRITE CURRENT SAVE):')))
+  Object.assign(time,JSON.parse(atob(prompt('Put save here (WILL OVERWRITE CURRENT SAVE):'))))
 }
 
 function buy (unit) {
@@ -353,8 +368,10 @@ function updateUI () {
 	
 	query('.timer').style.display = time.upgrades.timer.bought ? 'inline-block' : 'none'
 	
+	query('.cosmoInfo').style.display = time.cosmodecade.current >= 1 ? 'none' : 'block'
+	
 	if (time.upgrades.timer.bought){
-	  time.timerTime =  new Date(((time.seconds.current)+(time.minutes.current*60)+((time.hours.current+5)*3600)+((time.days.current)*3600*24)+(time.years.current*3600*24*365)+(time.weeks.current*3600*24*7))*1000)
+	  time.timerTime =  new Date(((time.seconds.current)+(time.minutes.current*60)+((time.hours.current+5)*3600)+((time.days.current)*3600*24)+(time.years.current*3600*24*365)+(time.weeks.current*3600*24*7)+(time.decades.current*3600*24*365*10)+(time.centuries.current*3600*24*365*100)+(time.millenium.current*3600*24*365*1000))*1000)
 	  time.timerTime.setMonth(time.timerTime.getMonth()+time.months.current)
 	  query('.realYear').innerHTML = time.timerTime.getYear()-70
 	  query('.realMonth').innerHTML = (getMonth(time.timerTime.getMonth()))[0]
@@ -368,16 +385,18 @@ function updateUI () {
 	
 	query('.seconds.ending').innerHTML = time.seconds.manual > 1 ? 's' : '';
 	
-	setUITimePlayed(); // includes plural endings
+	//setUITimePlayed(); // includes plural endings
 	
 	unitsComplete.forEach((unit, index) => {
-		let unitMoreThanHalf = time[unit].current >= time[unit].max / 2,
-			
-			nextUnit = units[index],
-			nextUnitPresent = nextUnit && time[nextUnit].current + time[nextUnit].generators > 0;
+	  let unitMoreThanHalf;
+	  try {
+		unitMoreThanHalf = time[unit].current >= time[unit].max[0] / 2}
+			  catch(e){unitMoreThanHalf = false;}	
+			let nextUnit = units[index]
+			let nextUnitPresent = nextUnit && time[nextUnit].current + time[nextUnit].generators > 0;
+			get(time, unit).showing = unitMoreThanHalf || nextUnitPresent || get(time, unit).showing
 		
-		if (unitMoreThanHalf || nextUnitPresent) showUnitBlock(nextUnit);
-		
+		if (get(time, unit).showing) showUnitBlock(nextUnit);
 	});
 	
 };
@@ -388,22 +407,20 @@ function setUITimePlayed () {
 		
 		timeParse = [
 			
-			Math.floor(played / 20 % 60),		/* seconds */
-			Math.floor(played / 1200 % 60),		/* minutes */
-			Math.floor(played / 72000 % 24),	/* hours */
-			Math.floor(played / 1728000)		/* days */
+			Math.floor((played / (1000/time.tick)) % 60),		/* seconds */
+			Math.floor(played / 20 / 60 % 60),		/* minutes */
+			Math.floor(played / 20/ 3600 % 24),	/* hours */
+			Math.floor(played / 20 / 3600 / 24)		/* days */
 			
 		];
 	
-	unitsComplete.forEach((unit, index) => {
-	  if (index <= 3){
+	timeUnits.forEach((unit, index) => {
 		
 		query('.' + unit + '.played').innerHTML = timeParse[index];
 		
 		let ending = timeParse[index] > 1 || timeParse[index] === 0 ? 's' : '';
 		
 		query('.' + unit + '.played.ending').innerHTML = ending;
-	  }
 	});
 	
 	
