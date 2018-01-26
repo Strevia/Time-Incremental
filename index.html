@@ -1,158 +1,213 @@
 <!DOCTYPE html>
 <html>
-
-	<head>
-
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width">
-		<title>Time Incremental</title>
-		
-		<link rel="stylesheet" href="style.css">
-		
-		<style>
-			
-			.block:not(.shown) { display: none; }
-			
-		</style>
-
-	</head>
-
-	<body>
-
-		<p>
-			
-			You have been playing for
-			<span class="played days"></span> day<span class="played days ending"></span>, 
-			<span class="played hours"></span> hour<span class="played hours ending"></span>, 
-			<span class="played minutes"></span> minute<span class="played minutes ending"></span> and 
-			<span class="played seconds"></span> second<span class="played seconds ending"></span>.
-			
-		</p>
-           <button class = "button tablinks" style = "display: inline;" id = "defaultTab" onclick = "openTab(event, 'regular');">The Beginning</button>
-            <span class = "weeks block">
-           <button class = "button tablinks" style = "display: inline" id = "weekTab" onclick = "openTab(event, 'weeksContent')">Weeks</button>
-           <button class = "button tablinks config" style = "display: inline" onclick = "openTab(event, 'configContent')">Configuration</button>
-           <button class = "button tablinks timer" style = "display: inline" onclick = "openTab(event, 'timerContent')">Timer</button></span>
-           <span class = "years block">
-             <button class = "button tablinks" style = "display:inline" onclick = "openTab(event, 'yearsContent')">Years</button>
-           </span>
-		<div class = "tabcontent" id = "regular">
-		<div class="seconds block shown">
-		
-			<p>You have <span class="seconds current"></span> seconds.</p>
-			
-			<p>You are getting <span class="seconds income"></span> seconds per second.</p>
-			
-			<p>
-				
-				<button class = "button" onclick="buy('seconds');">
-				
-					+<span class="seconds manual"></span> second<span class = "seconds ending"></span> per second
-					
-				</button>
-				
-				Cost: <span class="seconds cost"></span> seconds
-				
-			</p>
-			
-		</div>
-		
-		<div class="minutes block">
-			
-			<p class="minutes part">
-			
-				You have <span class="minutes current"></span> minutes, and <span class="minutes generators"></span> time accelerators.
-				
-			</p>
-			
-			<p class="minutes">
-			
-				<button class = "button" type="button" onclick="buy('minutes')">Time Accelerator</button>
-				
-				Cost: <span class="minutes cost"></span> minutes
-				
-			</p>
-			
-		</div>
-		
-		<div class="hours block">
-			
-			<p class="hours part">
-			
-				You have <span class="hours current"></span> hours, and <span class="hours generators"></span> clock factories.
-				
-			</p>
-
-			<p class="hours">
-			
-				<button class = "button" type="button" onclick="buy('hours')">Clock Factory</button>
-				
-				Cost: <span class="hours cost"></span> hours
-				
-			</p>
-			
-		</div>
-		
-		<div class="days block">
-			
-			<p class="days part">
-			
-				You have <span class="days current"></span> days, and <span class="days generators"></span> calendar flippers.
-				
-			</p>
-
-			<p class="days">
-			
-				<button class = "button" type="button" onclick="buy('days')">Calendar Flipper</button>
-				
-				Cost: <span class="days cost"></span> days
-				
-			</p>
-			
-		</div>		
-		<div>
-		  <p>
-		    <button class = "button" onclick = "if (time.days.current >= 7){time.days.current -= 7; time.weeks.current++;}">Purchase 1 Week</button> Cost: 7 Days
-		  </p>
-		</div>
-		<div class = "months block">
-		  <button class = "button" onclick = "if (time.days.current >= time.months.cost){time.days.current -= time.months.cost; time.months.current++}"><span class = "months name"></span></button> Cost: <span class = "months cost"></span> days
-		</div>
-		</div>
-		<div class = "weeks block tabcontent" id = "weeksContent">
-		You have <span class = "weeks current"></span> weeks.
-          <table style = "width: 50%">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width">
+      <title>Time Incremental</title>
+      <link rel="stylesheet" href="style.css">
+      <style>
+         .block:not(.shown) { display: none; }
+      </style>
+   </head>
+   <body>
+      <!--<p>
+         You have been playing for
+         <span class="played days"></span> day<span class="played days ending"></span>, 
+         <span class="played hours"></span> hour<span class="played hours ending"></span>, 
+         <span class="played minutes"></span> minute<span class="played minutes ending"></span> and 
+         <span class="played seconds"></span> second<span class="played seconds ending"></span>.
+         
+         </p>-->
+      <div class = "tooltip">
+         <button class = "button tablinks" style = "display: inline;" id = "defaultTab" onclick = "openTab(event, 'regular');"><span class = "tooltiptext">The very begginning. More tabs will open soon.</span>The Beginning</button>
+      </div>
+      <span class = "weeks block">
+         <div class = "tooltip">
+            <button class = "button tablinks" style = "display: inline" id = "weekTab" onclick = "openTab(event, 'weeksContent')"><span class = "tooltiptext">Allows you to purchase week upgrades.</span>Weeks</button>
+         </div>
+      </span>
+      <div class = "tooltip">
+         <button class = "button tablinks config" style = "display: inline" onclick = "openTab(event, 'configContent')"><span class = "tooltiptext">Allows you to imprt your save, export your save, and hard reset the game.</span>Configuration</button>
+      </div>
+      <div class = "tooltip">
+         <button class = "button tablinks timer" style = "display: inline" onclick = "openTab(event, 'timerContent')"><span class = "tooltiptext">A visual representation of what you currently have.</span>Timer</button>
+      </div>
+      <div class = "tooltip">
+         <span class = "years block">
+         <button class = "button tablinks" style = "display:inline" onclick = "openTab(event, 'yearsContent')"><span class = "tooltiptext">Everything related to years.</span>Years</button></span>
+      </div>
+      <div class = "tabcontent" id = "regular">
+         <div class="seconds block shown">
+            <p>You have <span class="seconds current"></span> seconds.</p>
+            <p>You are getting <span class="seconds income"></span> seconds per second.</p>
+            <p>
+               <button class = "button" onclick="buy('seconds');">
+               +<span class="seconds manual"></span> second<span class = "seconds ending"></span> per second
+               </button>
+               Cost: <span class="seconds cost"></span> seconds
+            </p>
+         </div>
+         <div class="minutes block">
+            <p class="minutes part">
+               You have <span class="minutes current"></span> minutes, and <span class="minutes generators"></span> time accelerators.
+            </p>
+            <p class="minutes">
+               <button class = "button" type="button" onclick="buy('minutes')">Time Accelerator</button>
+               Cost: <span class="minutes cost"></span> minutes
+            </p>
+         </div>
+         <div class="hours block">
+            <p class="hours part">
+               You have <span class="hours current"></span> hours, and <span class="hours generators"></span> clock factories.
+            </p>
+            <p class="hours">
+               <button class = "button" type="button" onclick="buy('hours')">Clock Factory</button>
+               Cost: <span class="hours cost"></span> hours
+            </p>
+         </div>
+         <div class="days block">
+            <p class="days part">
+               You have <span class="days current"></span> days, and <span class="days generators"></span> calendar flippers.
+            </p>
+            <p class="days">
+               <button class = "button" type="button" onclick="buy('days')">Calendar Flipper</button>
+               Cost: <span class="days cost"></span> days
+            </p>
+         </div>
+         <div>
+            <p>
+               <button class = "button" onclick = "if (time.days.current >= 7){time.days.current -= 7; time.weeks.current++;}">Purchase 1 Week</button> Cost: 7 Days
+            </p>
+         </div>
+         <div class = "months block">
+            <div class = "tooltip">
+               <button class = "button" onclick = "if (time.days.current >= time.months.cost){time.days.current -= time.months.cost; time.months.current++}"><span class = "tooltiptext">1 Month. Each gives a bonus to all buildings, and 12 gets you a year.</span><span class = "months name"></span></button> Cost: <span class = "months cost"></span> days
+            </div>
+         </div>
+      </div>
+      <div class = "weeks block tabcontent" id = "weeksContent">
+         You have <span class = "weeks current"></span> weeks.
+         <table style = "width: 50%">
             <tr>
-          <td><button class = "button upgrades calendar"  id = "calendarButton" onclick = "buy('upgrades.calendar')">Calendar <pre>4 weeks<span class = "weeks calendar"></span></pre></button></td>
-          <td><button class = "button upgrades config" id = "configButton" onclick = "buy('upgrades.config')">Configuration Tab<pre>Free</pre></button></td>
-          <td><button class = "button upgrades hourAuto" id = "houAuto" onclick = "buy('upgrades.hourAuto')">Hour Autobuyer<pre>2 weeks</pre></button></td>
-          </tr>
-          <tr>
-          <td><button class = "button upgrades minuteAuto" id = "minAuto" onclick = "buy('upgrades.minuteAuto')">Minute Autobuyer<pre>3 weeks</pre></button></td>
-          <td><button class = "button upgrades secondAuto" id = "secAuto" onclick = "buy('upgrades.secondAuto')">Second Autobuyer<pre>4 weeks</pre></button></td>
-          <td><button class = "button upgrades timer" id = "timerBuyer" onclick = "buy('upgrades.timer')">Timer, to display your progress<pre>2 weeks</pre></button></td></tr>
-          <tr>
-          <td><button class = "button upgrades multiplier" onclick = "buy('upgrades.multiplier')" id = "buyMultiplier">Multiplier Based on total Seconds Earned <pre>1 week</pre></button></td>
-          <td><button class = "button upgrades halfDay" id = "halfDayBuyer" onclick = "buy('upgrades.halfDay')">12 hours are required for a day <pre>4 weeks</pre></button></td>
-          <td><button class = "button upgrades limitIncrease" id = "limitIncreaseButton" onclick = "buy('upgrades.limitIncrease')">Manually bought time accelerators add 60 seconds to the second limit. <pre>2 weeks</pre></button></td></tr></table></div>
+               <td>
+                  <span class = "tooltip">
+                     <button class = "button upgrades calendar"  id = "calendarButton" onclick = "buy('upgrades.calendar')">
+                        <span class = "tooltiptext">Allows purchase of months.</span>Calendar 
+                        <pre>4 weeks<span class = "weeks calendar"></span></pre>
+                     </button>
+                  </span>
+               </td>
+               <td>
+                  <button class = "button upgrades config" id = "configButton" onclick = "buy('upgrades.config')">
+                     Configuration Tab
+                     <pre>Free</pre>
+                  </button>
+               </td>
+               <td>
+                  <button class = "button upgrades hourAuto" id = "houAuto" onclick = "buy('upgrades.hourAuto')">
+                     Hour Autobuyer
+                     <pre>2 weeks</pre>
+                  </button>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <button class = "button upgrades minuteAuto" id = "minAuto" onclick = "buy('upgrades.minuteAuto')">
+                     Minute Autobuyer
+                     <pre>3 weeks</pre>
+                  </button>
+               </td>
+               <td>
+                  <button class = "button upgrades secondAuto" id = "secAuto" onclick = "buy('upgrades.secondAuto')">
+                     Second Autobuyer
+                     <pre>4 weeks</pre>
+                  </button>
+               </td>
+               <td>
+                  <button class = "button upgrades timer" id = "timerBuyer" onclick = "buy('upgrades.timer')">
+                     Timer, to display your progress
+                     <pre>2 weeks</pre>
+                  </button>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <button class = "button upgrades multiplier" onclick = "buy('upgrades.multiplier')" id = "buyMultiplier">
+                     Multiplier Based on total Seconds Earned 
+                     <pre>1 week</pre>
+                  </button>
+               </td>
+               <td>
+                  <button class = "button upgrades halfDay" id = "halfDayBuyer" onclick = "buy('upgrades.halfDay')">
+                     12 hours are required for a day 
+                     <pre>4 weeks</pre>
+                  </button>
+               </td>
+               <td>
+                  <button class = "button upgrades limitIncrease" id = "limitIncreaseButton" onclick = "buy('upgrades.limitIncrease')">
+                     Manually bought time accelerators add 60 seconds to the second limit. 
+                     <pre>2 weeks</pre>
+                  </button>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <button class = "button upgrades doubleManualSecs" onclick = "buy('upgrades.doubleManualSecs')">
+                     Double Effect of Time Accelerators on Manual Seconds per Second 
+                     <pre>4 weeks</pre>
+                  </button>
+               </td>
+            </tr>
+         </table>
+      </div>
       <div class = "tabcontent" id = "configContent">
-        <button class = "button" onclick="resetGame()">Hard Reset</button>
-        <button class = "button" onclick ="exportGame()">Export Save</button>
-        <button class = "button" onclick = "importGame()">Import Save</button>
+         <button class = "button" onclick="resetGame()">Hard Reset</button>
+         <button class = "button" onclick ="exportGame()">Export Save</button>
+         <button class = "button" onclick = "importGame()">Import Save</button>
       </div>
       <div class = "tabcontent" id = "timerContent" align = "center">
-        <font size = 7><span class = "realMonth"></span> <span class = "realDate"></span>, Year <span class = "realYear"></span><br><span class = "realHour"></span>:<span class = "realMinute"></span>:<span class = "realSecond"></span></font></div>
+         <font size = 7><span class = "realMonth"></span> <span class = "realDate"></span>, Year <span class = "realYear"></span><br><span class = "realHour"></span>:<span class = "realMinute"></span>:<span class = "realSecond"></span></font>
+      </div>
       <div class = "tabcontent" id = "yearsContent">
-        You have <span class = "years current"></span> years, and <span class = "years generators"></span> time machines.
+         You have <span class = "years current"></span> years, and <span class = "years generators"></span> time machines.
+         <br>
+         <button class = "button" onclick = "if (time.years.current >= 10){time.years.current -= 10; time.decades.current++;}">Buy 1 Decade</button> Cost: 10 Years
+         <p>
+            <button class = "button" onclick = "if (time.years.current >= time.cosmodecade.cost){time.cosmodecade.current++; time.years.current -= time.cosmodecade.cost; time.cosmodecade.cost *= 10; clearInterval(onTick); runGame && requestInterval(onTick, time.tick); time.tick *= 0.5}">Buy 1 Cosmological Decade <span class = "cosmoInfo">Decreasing Tickspeed By 50%</span></button> Cost: <span class = "cosmodecade cost"></span> years. You currently have <span class = "cosmodecade current"></span>.
+         </p>
+         <div class = "cosmodecade block"></div>
+         <div class="decades block">
+            <p class="decades part">
+               You have <span class="decades current"></span> decades, and <span class="decades generators"></span> decade builds.
+            </p>
+            <p class="decades">
+               <button class = "button" type="button" onclick="buy('decades')">Decade Build</button>
+               Cost: <span class="decades cost"></span> decades.
+            </p>
+         </div>
+         <div class="centuries block">
+            <p class="centuries part">
+               You have <span class="centuries current"></span> centuries, and <span class="centuries generators"></span> century builds.
+            </p>
+            <p class="centuries">
+               <button class = "button" type="button" onclick="buy('centuries')">Century Build</button>
+               Cost: <span class="centuries cost"></span> centuries.
+            </p>
+         </div>
+         <div class= "millenium block">
+            <p class="millenium part">
+               You have <span class="millenium current"></span> millenia, and <span class="millenium generators"></span> millenium builds.
+            </p>
+            <p class="millenium">
+               <button class = "button" type="button" onclick="buy('millenium')">Millenium Build</button>
+               Cost: <span class="millenium cost"></span> millenia.
+            </p>
+         </div>
       </div>
       <!--<div class = "diaryContent boxed"></div>-->
-		<footer>
-			
-			
-		</footer>
-      
-	</body>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="index.js"></script>
-
+      <footer>
+      </footer>
+   </body>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <script src="index.js"></script>
 </html>
