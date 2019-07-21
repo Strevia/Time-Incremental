@@ -44,18 +44,18 @@ var timeDefault = {
     cost: 2,
     bought : false,
   },
-  minuteAuto :{
-    cost: 3,
-    bought : false,
-  },
-  secondAuto :{
-    cost: 4,
-    bought : false,
-  },
-  hourAuto :{
-    cost: 2,
-    bought : false,
-  },
+  //minuteAuto :{
+    //cost: 3,
+    //bought : false,
+  //},
+  //secondAuto :{
+    //cost: 4,
+    //bought : false,
+  //},
+  //hourAuto :{
+    //cost: 2,
+    //bought : false,
+  //},
   multiplier: {
     cost: 1,
     bought : false,
@@ -104,9 +104,9 @@ var timeDefault = {
 		'upgrades.halfDay',
 		'upgrades.timer',
 		'upgrades.limitIncrease',
-		'upgrades.minuteAuto',
-		'upgrades.secondAuto',
-		'upgrades.hourAuto',
+		//'upgrades.minuteAuto',
+		//'upgrades.secondAuto',
+		//'upgrades.hourAuto',
 		'upgrades.multiplier',
     'upgrades.doubleManualSecs',
     
