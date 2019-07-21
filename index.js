@@ -560,7 +560,7 @@ function gameLogic(){
 	  if (upgrade.includes('Auto')){
 	    if (get(time.upgrades, upgrade).bought) {
 	      let temp = upgrade.replace('Auto','')+'s'
-	      buy(temp)
+	      //buy(temp)
 	    }
 	  }
 	});
