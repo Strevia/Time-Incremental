@@ -1,3 +1,5 @@
+var clock = 0;
+
 var timeDefault = {
 	
 	seconds: {
@@ -150,79 +152,20 @@ units.forEach(unit => timeDefault[unit] = {
 initialize();
 
 function onTick () {
+	now = Date.now();
+	clock += time.tick;
+	var dif = now - sessionStart - clock;
 	
 	save();
 	
 	time.played++;
-	
-	time.seconds.income += time.minutes.generators * 2 / time.tick;
-	if (time.upgrades.multiplier.bought){
-	  time.seconds.income += Math.log(time.seconds.total)
-	}
-	time.seconds.current += time.seconds.income * 2 / time.tick;
-	time.seconds.total += time.seconds.income *2 / time.tick;
-	[time.months.name,time.months.cost] = getMonth(time.months.current)
-	
-	units.forEach((unit, index) => {
-		
-		if (index + 1 < units.length) { time[unit].generators += (time[units[index + 1]].generators * 2 / time.tick)*(Math.pow(1.5,time.months.current)); }
-		
-	});
-	time.seconds.manual = Math.floor(Math.pow(2*(1+time.upgrades.doubleManualSecs.bought), time.minutes.manual));
-	
+	gameLogic();
+	 while(dif >= time.tick) {
+         gameLogic();
+         clock += time.tick;
+         dif -= time.tick;
+    }
 	updateUI();
-	time.seconds.max[0] = (60 * (time.hours.manual + 1 + (time.days.manual * 2)));
-	time.hours.max[0] = 24/(time.upgrades.halfDay.bought+1)
-	if (time.upgrades.limitIncrease.bought){
-	  time.seconds.max[0] += 60 * time.minutes.manual;
-	}
-	if (time.seconds.current >= time.seconds.max[0]) {
-		
-		time.seconds.current = 1;
-		time.seconds.income = 0;
-		time.seconds.cost = 1;
-		
-		time.minutes.current += time.seconds.max[0]/60;
-		
-		if (!time.minutes.entryUnit){
-		  //addEntry("Eureka! My new pieces all seemed to join together to form a bigger, more powerful piece. I wonder what will happen if I throw it on the ground...", true)
-		  time.minutes.entryUnit = true;
-		}
-		
-	};
-	
-	units.forEach((unit, index) => {
-	  try {
-		if (time[unit].current >= time[unit].max[0]) {
-			//if (!time[units[index+1]].entryUnit){
-			  //addEntry('The pieces have joined together. Interesting...', true)
-			  //time[units[index+1]].entryUnit = true;
-			//}
-			time[unit].generators = 0;
-			time[unit].current -= time[unit].max[0]
-			time[unit].manual = 0;
-			time[unit].cost = 1;
-			get(time, time[unit].max[1]).current++;
-			if (time[unit].max[1] === 'years'){ 
-			  time.years.generators++ 
-			  time.days.generators = 0;
-			  time.days.price = 1;
-			  
-			};
-			
-			}
-	  }
-	  catch(e){}
-	});
-	
-	Object.getOwnPropertyNames(time.upgrades).forEach(upgrade => {
-	  if (upgrade.includes('Auto')){
-	    if (get(time.upgrades, upgrade).bought) {
-	      let temp = upgrade.replace('Auto','')+'s'
-	      buy(temp)
-	    }
-	  }
-	});
 	
 };
 
@@ -551,4 +494,73 @@ function formatSeconds(seconds){
 }
 function inside(array, element){
   return element.indexOf(element) > -1
+}
+function gameLogic(){
+	time.seconds.income += time.minutes.generators * 2 / time.tick;
+	if (time.upgrades.multiplier.bought){
+	  time.seconds.income += Math.log(time.seconds.total)
+	}
+	time.seconds.current += time.seconds.income * 2 / time.tick;
+	time.seconds.total += time.seconds.income *2 / time.tick;
+	[time.months.name,time.months.cost] = getMonth(time.months.current)
+	
+	units.forEach((unit, index) => {
+		
+		if (index + 1 < units.length) { time[unit].generators += (time[units[index + 1]].generators * 2 / time.tick)*(Math.pow(1.5,time.months.current)); }
+		
+	});
+	time.seconds.manual = Math.floor(Math.pow(2*(1+time.upgrades.doubleManualSecs.bought), time.minutes.manual));
+	
+	time.seconds.max[0] = (60 * (time.hours.manual + 1 + (time.days.manual * 2)));
+	time.hours.max[0] = 24/(time.upgrades.halfDay.bought+1)
+	if (time.upgrades.limitIncrease.bought){
+	  time.seconds.max[0] += 60 * time.minutes.manual;
+	}
+	if (time.seconds.current >= time.seconds.max[0]) {
+		
+		time.seconds.current = 1;
+		time.seconds.income = 0;
+		time.seconds.cost = 1;
+		
+		time.minutes.current += time.seconds.max[0]/60;
+		
+		if (!time.minutes.entryUnit){
+		  //addEntry("Eureka! My new pieces all seemed to join together to form a bigger, more powerful piece. I wonder what will happen if I throw it on the ground...", true)
+		  time.minutes.entryUnit = true;
+		}
+		
+	};
+	
+	units.forEach((unit, index) => {
+	  try {
+		if (time[unit].current >= time[unit].max[0]) {
+			//if (!time[units[index+1]].entryUnit){
+			  //addEntry('The pieces have joined together. Interesting...', true)
+			  //time[units[index+1]].entryUnit = true;
+			//}
+			time[unit].generators = 0;
+			time[unit].current -= time[unit].max[0]
+			time[unit].manual = 0;
+			time[unit].cost = 1;
+			get(time, time[unit].max[1]).current++;
+			if (time[unit].max[1] === 'years'){ 
+			  time.years.generators++ 
+			  time.days.generators = 0;
+			  time.days.price = 1;
+			  
+			};
+			
+			}
+	  }
+	  catch(e){}
+	});
+	
+	Object.getOwnPropertyNames(time.upgrades).forEach(upgrade => {
+	  if (upgrade.includes('Auto')){
+	    if (get(time.upgrades, upgrade).bought) {
+	      let temp = upgrade.replace('Auto','')+'s'
+	      buy(temp)
+	    }
+	  }
+	});
 }
