@@ -176,6 +176,7 @@ function initialize () {
 	time = deepCopy(timeDefault);
 	
 	load();
+	time.upgrades.config.bought = true; //making config available from start
 	
 	runGame && requestInterval(onTick, time.tick);
 	
@@ -232,7 +233,7 @@ function resetGame () {
 };
 
 function exportGame() {
-  prompt('Save:', btoa(localStorage.getItem('savedata')));
+  prompt('Save:', btoa(JSON.stringify(time)));
 }
 
 function importGame() {
