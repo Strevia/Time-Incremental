@@ -165,6 +165,10 @@ function onTick () {
          clock += time.tick;
          dif -= time.tick;
     }
+	if (time.years.current > 0 && !time.yearAlert){
+		alert("You've reached the endgame! Everything past years at this point is experimental. If you have any ideas, please go to the Time Incremental Subreddit and suggest them. Thank you.");
+		time.yearAlert = true;
+	}
 	updateUI();
 	
 };
