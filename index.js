@@ -522,12 +522,12 @@ function gameLogic(){
 	  time.seconds.max[0] += 60 * time.minutes.manual;
 	}
 	if (time.seconds.current >= time.seconds.max[0]) {
+		time.minutes.current += Math.floor(time.seconds.current/60);
 		
 		time.seconds.current = 1;
 		time.seconds.income = 0;
 		time.seconds.cost = 1;
 		
-		time.minutes.current += time.seconds.max[0]/60;
 		
 		if (!time.minutes.entryUnit){
 		  //addEntry("Eureka! My new pieces all seemed to join together to form a bigger, more powerful piece. I wonder what will happen if I throw it on the ground...", true)
