@@ -87,14 +87,17 @@ var timeDefault = {
 		'minutes.current',
 		'minutes.generators',
 		'minutes.cost',
+		'minutes.increase',
 		
 		'hours.current',
 		'hours.generators',
 		'hours.cost',
+		'hours.increase',
 		
 		'days.current',
 		'days.generators',
 		'days.cost',
+		'days.increase',
 		
 		'years.current',
 		'years.generators',
@@ -136,7 +139,9 @@ var timeDefault = {
 	timeUnits = ['seconds', 'minutes', 'hours', 'days'];
 	unitsMax = { minutes: [60, 'hours'], hours: [24, 'days'], days: [365, 'years'], months: [12, 'years'], decades : [10, 'centuries'], centuries: [10, 'millenium']};
 
-units.forEach(unit => timeDefault[unit] = {
+units.forEach(unit => {
+pos = units.indexOf(unit);
+timeDefault[unit] = {
 	
 	current: 0,
 	generators: 0,
@@ -146,6 +151,8 @@ units.forEach(unit => timeDefault[unit] = {
 	
 	max: unitsMax[unit],
   showing : false,
+  increase: ((1+(0.1*(pos+1))))
+}
 	
 });
 
@@ -230,6 +237,8 @@ function resetGame () {
 		
 		removeSaveData();
 		
+		location.reload();
+		
 		initialize();
 		
 	};
@@ -245,6 +254,7 @@ function importGame() {
 }
 
 function buy (unit) {
+	pos = units.indexOf(unit);
   
   if (!unit.includes('upgrades')) {
 	
@@ -259,10 +269,9 @@ function buy (unit) {
 			time.seconds.income += time.seconds.manual
 			
 		} else {
+			time[unit].generators += time[unit].increase
 			
-			time[unit].generators++;		
-			
-			time[unit].manual++;
+			time[unit].manual+= time[unit].increase
 			
 			if (!time[unit].entryGen){
 			  //addEntry("Extraordinary! The pieces are producing more and more!", true)
@@ -291,7 +300,7 @@ function updateUI () {
 	  if (cache[element] !== get(time, element)){
 	  if (!element.includes('upgrades')) {
 	    if (!isNaN(parseInt(get(time, element)))){
-	    query('.' + element).innerHTML = parseInt(get(time, element));
+	    query('.' + element).innerHTML = format(get(time, element));
 	      cache[element] = parseInt(get(time, element))
 	    }
 	    else {
@@ -521,7 +530,7 @@ function gameLogic(){
 	if (time.upgrades.limitIncrease.bought){
 	  time.seconds.max[0] += 60 * time.minutes.manual;
 	}
-	if (time.seconds.current >= time.seconds.max[0]) {
+	if (time.seconds.current >= 60) {
 		time.minutes.current += Math.floor(time.seconds.current/60);
 		
 		time.seconds.current = 1;
@@ -538,16 +547,17 @@ function gameLogic(){
 	
 	units.forEach((unit, index) => {
 	  try {
+		  pos = units.indexOf(unit)
 		if (time[unit].current >= time[unit].max[0]) {
 			//if (!time[units[index+1]].entryUnit){
 			  //addEntry('The pieces have joined together. Interesting...', true)
 			  //time[units[index+1]].entryUnit = true;
 			//}
 			time[unit].generators = 0;
-			time[unit].current -= time[unit].max[0]
+			get(time, time[unit].max[1]).current+= Math.floor(time[unit].current / time[unit].max[0]);
+			time[unit].current = time[unit].current % time[unit].max[0]
 			time[unit].manual = 0;
 			time[unit].cost = 1;
-			get(time, time[unit].max[1]).current++;
 			if (time[unit].max[1] === 'years'){ 
 			  time.years.generators++ 
 			  time.days.generators = 0;
@@ -556,6 +566,7 @@ function gameLogic(){
 			};
 			
 			}
+			time[unit].increase = (((1+(0.1*(pos+1))))**time[units[pos+1]].manual) || 1	
 	  }
 	  catch(e){}
 	});
@@ -568,4 +579,20 @@ function gameLogic(){
 	    }
 	  }
 	});
+}
+function format(num) {
+  let exp = Math.floor(Math.log10(num))
+  var leading
+  if (exp <= 2) {
+    return Number.parseFloat(num).toPrecision(3)
+  }
+  if (exp == Infinity) {
+    return '∞'
+  }
+  else {
+		  leading = (num / 10**exp).toPrecision(3)
+		  prefix = String(leading) + 'e' + String(exp)
+  }
+	  
+    return prefix
 }
