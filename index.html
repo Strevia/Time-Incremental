@@ -173,7 +173,7 @@
          <br>
          <button class = "button" onclick = "if (time.years.current >= 10){time.years.current -= 10; time.decades.current++;}">Buy 1 Decade</button> Cost: 10 Years
          <p>
-            <button class = "button" onclick = "if (time.years.current >= time.cosmodecade.cost){time.cosmodecade.current++; time.years.current -= time.cosmodecade.cost; time.cosmodecade.cost *= 10; clearInterval(onTick); runGame && requestInterval(onTick, time.tick); time.tick *= 0.5}">Buy 1 Cosmological Decade <span class = "cosmoInfo">Decreasing Tickspeed By 50%</span></button> Cost: <span class = "cosmodecade cost"></span> years. You currently have <span class = "cosmodecade current"></span>.
+            <button class = "button" onclick = "buy('cosmodecade')">Buy 1 Cosmological Decade <span class = "cosmoInfo">Decreasing Tickspeed By 10%</span></button> Cost: <span class = "cosmodecade cost"></span> years. You currently have <span class = "cosmodecade current"></span>.
          </p>
          <div class = "cosmodecade block"></div>
          <div class="decades block">
