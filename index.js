@@ -314,7 +314,7 @@ function buy(unit) {
 };
 
 function updateUI() {
-
+	document.getElementById('export').setAttribute('data-clipboard-text',btoa(JSON.stringify(time)))
     UIUpdateList.forEach(element => {
         if (cache[element] !== get(time, element)) {
             if (!element.includes('upgrades')) {
@@ -635,3 +635,4 @@ function format(num) {
 
     return prefix
 }
+var clipboard = new ClipboardJS(document.getElementById("export"));
